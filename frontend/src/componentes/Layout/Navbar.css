@@ -1,0 +1,64 @@
+.navbar {
+    background-color: rgb(77, 182, 172);
+    border: 0.5px solid rgb(143, 204, 228);
+  }
+
+.usuario{
+  color: #fff;
+  padding-right: 2rem;
+}
+
+.despliegue{
+  background-color: rgb(178, 223, 219)  !important;
+}
+
+.menu{
+  padding-top: 1rem;
+  background-color: rgb(178, 223, 219) !important;
+}
+
+.informacion{
+  color:#fff;
+  background-color: rgb(77, 182, 172) !important;
+  border-radius: 40px 40px 40px 40px !important;
+  border: 1px solid rgb(178, 223, 219) !important;
+  font-weight: bold;
+}
+
+.lista-opciones{
+  padding-top: 40px;
+}
+  
+.opciones{
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color:rgb(59, 40, 129);
+  font-weight: bold;
+  padding: 30px 50px;
+  position: relative;
+  overflow: hidden;
+  transition: color 1s;
+}
+
+.opciones:hover{
+  color: rgb(77, 182, 172);
+}
+
+.opciones::before{
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: -50px;
+  width: 0;
+  height: 100%;
+  background-color: #fff;
+  transform: skewX(35deg);
+  z-index: -1;
+  transition: width 1s;
+}
+
+.opciones:hover::before{
+  width: 150%;
+}
+

@@ -1,0 +1,17 @@
+body{
+    background-image: url(./Fondo_Lab.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+@media screen and (max-width: 767px) {
+    body {
+        background-image: url(./Fondo_Lab_Tel.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }    
+}
