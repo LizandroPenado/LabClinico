@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../Layout/Navbar';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import './Inicio.css'
 import { Typography } from '@mui/material';
@@ -8,7 +7,6 @@ function Inicio() {
 
     return (
         <>
-            <Navbar />
             <Container fluid className='pt-5 contenedor-inicio'>
                 <Row className='informacion-inicio'>
                     <Col sm={4}>

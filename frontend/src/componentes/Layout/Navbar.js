@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import Logo from './Logo';
 import { Button, NavbarBrand } from 'react-bootstrap';
 import { Container, Navbar, Nav, Offcanvas } from 'react-bootstrap';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom';
+import AuthUser from '../Login/AuthUser';
 
-function Navegacionbar() {
-/*   const [sidebar, setSidebar] = useState(false); */
+export default function NavbarBase() {
+  const { token, logout } = AuthUser();
+  const { http } = AuthUser();
+  const [userdetail, setUserdetail] = useState('');
 
- /*  const showSidebar = () => setSidebar(!sidebar); */
+  useEffect(() => {
+    fetchUserDetail();
+  }, []);
 
+  const fetchUserDetail = () => {
+    http.post('/me').then((res) => {
+      setUserdetail(res.data);
+    });
+  }
+  const logoutUSer = () => {
+    if (token !== undefined) {
+      logout();
+    }
+  }
   return (
     <>
       <Navbar className='navbar' expand={false}>
@@ -31,40 +47,16 @@ function Navegacionbar() {
                 {SidebarData.map((item, index) => {
                   return (
                     <li key={index} className="lista-opciones">
-                      {/* <Link to={item.path}>
-                        {item.icon}
-                        <span className="span">{item.title}</span>
-                      </Link> */}
-                      <a href={item.path} className="opciones">{item.icon} {' '} {item.title}</a>
+                      <Link to={item.path} className="opciones">{item.icon} {' '} {item.title}</Link>
                     </li>
                   );
                 })}
-                {/* <Nav.Link href="#action1">Home</Nav.Link>
-                <Nav.Link href="#action2">Link</Nav.Link>
-                <NavDropdown title="Dropdown" id="offcanvasNavbarDropdown">
-                  <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action5">
-                    Something else here
-                  </NavDropdown.Item>
-                </NavDropdown> */}
               </Nav>
-              {/* <Form className="d-flex">
-                <FormControl
-                  type="search"
-                  placeholder="Search"
-                  className="me-2"
-                  aria-label="Search"
-                />
-                <Button variant="outline-success">Search</Button>
-              </Form> */}
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-
           <NavbarBrand>
-            <span className='usuario'>Usuario</span> {' '}
-            <Button variant='danger' size='sm'>
+            <span className='usuario'>{userdetail.name}</span> {' '}
+            <Button variant='danger' size='sm' onClick={logoutUSer}>
               <LogoutIcon />
             </Button>
           </NavbarBrand>
@@ -73,5 +65,3 @@ function Navegacionbar() {
     </>
   );
 }
-
-export default Navegacionbar;

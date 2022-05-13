@@ -4,13 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import GroupIcon from '@mui/icons-material/Group';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
-export const SidebarData = [
-    /* {
-        title: 'Login',
-        path: '/',
-        icon: <HomeIcon />,
-        cName: 'nav-text'
-    }, */
+export const JefeSidebarData = [
     {
         title: 'Inicio',
         path: '/inicio',
@@ -18,20 +12,26 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Registrar',
-        path: '/registrarPaciente',
-        icon: <PersonIcon />,
+        title: 'Urianalisis',
+        path: '/reporteUrianalisis',
+        icon: <AssignmentIndIcon />,
         cName: 'nav-text'
     },
     {
-        title: 'Usuarios',
-        path: '/usuario',
-        icon: <GroupIcon />,
+        title: 'Quimica clinica',
+        path: '/reporteQuimica',
+        icon: <AssignmentIndIcon />,
         cName: 'nav-text'
     },
     {
-        title: 'Rol',
-        path: '/rol',
+        title: 'Hematologia',
+        path: '/reporteHematologia',
+        icon: <AssignmentIndIcon />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Cropologia',
+        path: '/reporteCropologia',
         icon: <AssignmentIndIcon />,
         cName: 'nav-text'
     },
