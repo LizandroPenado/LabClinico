@@ -4,23 +4,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import GroupIcon from '@mui/icons-material/Group';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
-export const SidebarData = [
-    /* {
-        title: 'Login',
-        path: '/',
-        icon: <HomeIcon />,
-        cName: 'nav-text'
-    }, */
+export const AdminSidebarData = [
     {
         title: 'Inicio',
         path: '/inicio',
         icon: <HomeIcon />,
-        cName: 'nav-text'
-    },
-    {
-        title: 'Registrar',
-        path: '/registrarPaciente',
-        icon: <PersonIcon />,
         cName: 'nav-text'
     },
     {
@@ -32,6 +20,12 @@ export const SidebarData = [
     {
         title: 'Rol',
         path: '/rol',
+        icon: <AssignmentIndIcon />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Privilegio',
+        path: '/privilegio',
         icon: <AssignmentIndIcon />,
         cName: 'nav-text'
     },
