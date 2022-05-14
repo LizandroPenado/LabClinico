@@ -13,9 +13,9 @@ import RegistrarPaciente from './componentes/Paciente/RegistrarPaciente';
 function App() {
   const { getToken } = AuthUser();
 
-  if (!getToken()) {
+ /*  if (!getToken()) {
     return <InicioSesion />
-  }
+  } */
   return (
     <>
       <Navbar />
