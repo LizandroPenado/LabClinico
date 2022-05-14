@@ -58,7 +58,7 @@ function Usuario() {
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            value === 0 ? (
+            value === "0" ? (
               <span>Activo</span>
             ) : (
               <span>Bloqueado</span>
@@ -147,7 +147,7 @@ function Usuario() {
   const handlePost = (e) => {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:8000/api/user/", user)
+      .post("http://127.0.0.1:8000/api/register/", user)
       .then((response) => {
         Swal.fire({
           icon: 'success',
