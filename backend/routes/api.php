@@ -57,3 +57,6 @@ Route::get('rol', [RolController::class, 'index']);
 Route::post('rol', [RolController::class, 'store']);
 Route::put('rol/{id}', [RolController::class, 'update']);
 Route::delete('rol/{id}', [RolController::class, 'destroy']);
+
+//Route::post('user/login', [UserController::class, 'login']);
+Route::post('user/register', [UserController::class,'register']);

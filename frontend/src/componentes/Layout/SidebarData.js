@@ -15,24 +15,27 @@ export const SidebarData = [
         title: 'Inicio',
         path: '/inicio',
         icon: <HomeIcon />,
-        cName: 'nav-text'
+        cName: 'nav-text',
     },
     {
         title: 'Registrar',
         path: '/registrarPaciente',
         icon: <PersonIcon />,
-        cName: 'nav-text'
+        cName: 'nav-text',
+        rol: '2'
     },
     {
         title: 'Usuarios',
         path: '/usuario',
         icon: <GroupIcon />,
-        cName: 'nav-text'
+        cName: 'nav-text',
+        rol: '1'
     },
     {
         title: 'Rol',
         path: '/rol',
         icon: <AssignmentIndIcon />,
-        cName: 'nav-text'
+        cName: 'nav-text',
+        rol: '1'
     },
 ];

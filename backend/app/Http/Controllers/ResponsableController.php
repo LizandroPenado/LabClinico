@@ -36,19 +36,25 @@ class ResponsableController extends Controller
      */
     public function store(Request $request)
     {
+        $fecha = $request->get('dia_res') . "/". $request->get('mes_res') . "/" . $request->get('anio_res');
+
         $responsable = new Responsable();
         $responsable->nombre_responsable = $request->get('nombre_res');
         $responsable->apellido_responsable = $request->get('apellido_res');
-        $responsable->fecha_nacimiento_res = $request->get('fecha_nacimiento_res');
+        $responsable->fecha_nacimiento_res = $fecha;
         $responsable->correo_responsable = $request->get('correo_res');
         $responsable->identificacion_res = $request->get('identificacion_res');
         $responsable->tipo_identificacion_res = $request->get('tipo_identificacion_res');
         $responsable->telefono_res = $request->get('telefono_res');
-        $responsable->save();
+
+        DB::insert(
+            'insert into responsables (nombre_responsable,apellido_responsable,fecha_nacimiento_res,correo_responsable,identificacion_res,tipo_identificacion_res,telefono_res) values (?, ?, ?, ?, ?, ?, ?)',
+            [$responsable->nombre_responsable, $responsable->apellido_responsable, $responsable->fecha_nacimiento_res, $responsable->correo_responsable, $responsable->identificacion_res, $responsable->tipo_identificacion_res, $responsable->telefono_res]
+        );
 
         $ultimo_registro = DB::table('responsables')
             ->select('responsables.id_responsable', 'responsables.nombre_responsable')
-            ->where('responsables.identificacion_res', '=',$request->get('identificacion_res'))
+            ->where('responsables.identificacion_res', '=', $request->get('identificacion_res'))
             ->first();
         return $ultimo_registro;
     }

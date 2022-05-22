@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -88,7 +90,11 @@ class AuthController extends Controller
         $credentials = request(['name','email', 'password', 'rol_id']);
         /* $credentials = [$request->name,$request->email, $request->password]; */
         $credentials['password'] = bcrypt($credentials['password']);
-        User::create($credentials);
+        DB::insert(
+            'insert into users (name,email,password,estado,rol_id) values (?, ?, ?, ?)',
+            [$credentials["name"] , $credentials["email"] , $credentials["password"] ,$credentials["rol_id"]]
+        );
+        //User::create($credentials);
 
         return response()->json('success');
     }

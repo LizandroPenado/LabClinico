@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -43,13 +44,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User();
+        /*$user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->password = $request->get('password');
         $user->estado = $request->get('estado');
         $user->rol_id = $request->get('rol_id');
-        $user->save();
+        $user->save();*/
+
+        $nombre = $request->get('name');
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $estado = $request->get('estado');
+        $rol = $request->get('rol_id');
+
+        DB::insert(
+            'insert into users (name,email,password,estado,rol_id) values (?, ?, ?, ?, ?)',
+            [$nombre, $email, $password, $estado, $rol]
+        );
     }
 
     /**
@@ -101,5 +113,37 @@ class UserController extends Controller
     {
         $user = User::destroy($request->id);
         return $user;
+    }
+
+    function register(Request $request)
+    {
+        $name = $request->get('name');
+        $email = $request->get('email');
+        $estado = $request->get('estado');
+        $rol = $request->get('rol_id');
+        $password = Hash::make($request->get('password'));
+        DB::table('users')->insert([
+            'name' =>   $name,
+            'email' =>  $email ,
+            'password'=> $password,
+            'estado'=> $estado,
+            'rol_id' => $rol
+          ]);
+    }
+    function login(Request $req)
+    {
+        $email =  $req->input('email');
+        $password = $req->input('password');
+ 
+        $user = DB::table('users')->where('email',$email)->first();
+        if(!Hash::check($password, $user->password))
+        {
+            echo "Not Matched";
+        }
+        else
+        {
+            //$user = DB::table('users')->where('email',$email)->first();
+           echo $user->email;
+        }
     }
 }

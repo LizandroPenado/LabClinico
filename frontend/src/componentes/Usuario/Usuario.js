@@ -19,7 +19,7 @@ function Usuario() {
     name: '',
     email: '',
     password: '',
-    estado: 0,
+    estado: '0',
     rol_id: 0,
   })
 
@@ -140,14 +140,19 @@ function Usuario() {
   }
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value })
+  }
+
+  const handleChangeCheck = (e) => {
+    const { name, value } = e.target.checked;
     setUser({ ...user, [name]: value })
   }
 
   const handlePost = (e) => {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:8000/api/register/", user)
+      .post("http://127.0.0.1:8000/api/user/register", user)
       .then((response) => {
         Swal.fire({
           icon: 'success',
@@ -198,6 +203,7 @@ function Usuario() {
       name: '',
       email: '',
       password: '',
+      estado: false,
       rol_id: 0,
     })
   }
@@ -283,7 +289,7 @@ function Usuario() {
                     value={rol_id}
                     onChange={handleChange}
                   >
-                    <option value="" disabled={true}>
+                    <option value=''>
                       Seleccione..
                     </option>
                     {roles.map((elemento) => (
@@ -300,15 +306,14 @@ function Usuario() {
             ) : (
               <Form validated={true}>
                 <Form.Group>
-                  <Form.Label>Estado*</Form.Label>
                   <Form.Check
-                    type="checkbox"
                     id="estado"
                     name="estado"
-                    label="Estado"
+                    label="Estado*"
                     required={true}
                     value={estado}
-                    onChange={handleChange}
+                    checked={estado}
+                    onChange={handleChangeCheck}
                   />
                 </Form.Group>
                 <Form.Group>
