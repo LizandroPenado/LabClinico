@@ -6,6 +6,7 @@ import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import ModalCrud from '../Modal/ModalCrud';
 import Swal from 'sweetalert2';
+import Navbar from '../Layout/Navbar';
 
 function Usuario() {
   const [modalInsert, setModalInsert] = useState(false);
@@ -212,6 +213,7 @@ function Usuario() {
 
   return (
     <>
+    {/* <Navbar/> */}
       <div className='pt-3 container'>
         <DataTable
           agregar={

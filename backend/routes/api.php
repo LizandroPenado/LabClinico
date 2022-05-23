@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DatoDemograficoController;
 use App\Http\Controllers\DepartamentoController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ResponsableController;
@@ -26,8 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('user/register', [UserController::class,'register']);
 /* Route::post('/login', 'App\Http\Controllers\AuthController@login'); */
-Route::post('register', [AuthController::class,'register']);
+/* Route::post('register', [AuthController::class,'register']); */
 /* Route::post('/register', 'App\Http\Controllers\AuthController@register'); */
 
 Route::group(['middleware'=>'api'], function(){
@@ -36,8 +39,8 @@ Route::group(['middleware'=>'api'], function(){
     Route::post('me', [AuthController::class, 'me']);
 });
 
-Route::get('departamento', [DepartamentoController::class, 'index'] /* 'App\Http\Controllers\DepartamentoController@index' */); 
-Route::post('departamento', [DepartamentoController::class, 'store'] /* 'App\Http\Controllers\DepartamentoController@store' */); 
+Route::get('departamento', [DepartamentoController::class, 'index']); 
+Route::post('departamento', [DepartamentoController::class, 'store']); 
 
 Route::get('municipio', [MunicipioController::class, 'index']); 
 Route::get('municipio/departamentos', [MunicipioController::class, 'filtroDepartamento']);
@@ -58,5 +61,7 @@ Route::post('rol', [RolController::class, 'store']);
 Route::put('rol/{id}', [RolController::class, 'update']);
 Route::delete('rol/{id}', [RolController::class, 'destroy']);
 
-//Route::post('user/login', [UserController::class, 'login']);
-Route::post('user/register', [UserController::class,'register']);
+Route::get('menu', [MenuController::class, 'index']); 
+Route::get('menu/rol', [MenuController::class, 'menuPorRol']); 
+
+Route::post('demografico', [DatoDemograficoController::class, 'store']);
