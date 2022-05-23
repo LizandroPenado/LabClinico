@@ -2,11 +2,12 @@ import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import './Inicio.css'
 import { Typography } from '@mui/material';
+import Navbar from '../Layout/Navbar';
 
 function Inicio() {
-
     return (
         <>
+        {/* <Navbar/> */}
             <Container fluid className='pt-5 contenedor-inicio'>
                 <Row className='informacion-inicio'>
                     <Col sm={4}>

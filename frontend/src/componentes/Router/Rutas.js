@@ -28,7 +28,7 @@ function Rutas() {
                     case "2":
                         return (
                             <>
-                                <Route path="/registrarPaciente" element={<RegistrarPaciente />} />
+                                <Route path="/registrar" element={<RegistrarPaciente />} />
                             </>
                         )
                     case "3":

@@ -47,22 +47,21 @@ class PacienteController extends Controller
         $paciente->nombre_paciente = $request->get('nombre');
         $paciente->apellido_paciente = $request->get('apellido');
         $paciente->fecha_nacimiento_pac = $fecha;
-        $paciente->sexo_paciente = $request->get('sexo');
         $paciente->direccion_paciente = $request->get('direccion');
         $paciente->correo_paciente = $request->get('correo');
-        $paciente->estado_civil = $request->get('estado_civil');
         $paciente->identificacion_pac = $request->get('identificacion');
         $paciente->tipo_identificacion_pac = $request->get('tipo_identificacion');
         $paciente->nacionalidad_pac = $request->get('nacionalidad');
         $paciente->municipio_id = $request->get('municipio');
         $paciente->responsable_id = $request->get('id');
+        $paciente->demografico_id = $request->get('id_demografico');
 
         DB::insert(
-            'insert into pacientes (nombre_paciente,apellido_paciente,fecha_nacimiento_pac,sexo_paciente,direccion_paciente,correo_paciente,estado_civil,identificacion_pac,tipo_identificacion_pac,nacionalidad_pac,responsable_id,municipio_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            'insert into pacientes (nombre_paciente,apellido_paciente,fecha_nacimiento_pac,direccion_paciente,correo_paciente,identificacion_pac,tipo_identificacion_pac,nacionalidad_pac,responsable_id,municipio_id,demografico_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
-                $paciente->nombre_paciente, $paciente->apellido_paciente, $paciente->fecha_nacimiento_pac, $paciente->sexo_paciente, $paciente->direccion_paciente,
-                $paciente->correo_paciente, $paciente->estado_civil, $paciente->identificacion_pac, $paciente->tipo_identificacion_pac, $paciente->nacionalidad_pac,
-                $paciente->responsable_id, $paciente->municipio_id
+                $paciente->nombre_paciente, $paciente->apellido_paciente, $paciente->fecha_nacimiento_pac, $paciente->direccion_paciente, $paciente->correo_paciente,
+                $paciente->identificacion_pac, $paciente->tipo_identificacion_pac, $paciente->nacionalidad_pac, $paciente->responsable_id, $paciente->municipio_id,
+                $paciente->demografico_id
             ]
         );
     }

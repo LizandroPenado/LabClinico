@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Form, Col, Row, Button, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+/* import Navbar from '../Layout/Navbar'; */
 
 export default function RegistrarPaciente() {
     const [departament, setDepartament] = useState([]);
     const [munici, setMunici] = useState([]);
-    const formRef = useRef(null);
     const [validated, setValidated] = useState(false);
     const [paciente, setPaciente] = useState({
         nombre: '',
@@ -24,6 +24,7 @@ export default function RegistrarPaciente() {
         estado_civil: '',
         nacionalidad: '',
         responsable: 0,
+        id_demografico: 0,
     })
     const [responsable, setResponsable] = useState({
         nombre_res: '',
@@ -68,39 +69,59 @@ export default function RegistrarPaciente() {
         await axios
             .post("http://127.0.0.1:8000/api/responsable/", responsable)
             .then((response) => {
-                const { id_responsable } = response.data;
-                //Registrar paciente
-                axios
-                    .post("http://127.0.0.1:8000/api/paciente/",
-                        {
-                            nombre: paciente.nombre,
-                            apellido: paciente.apellido,
-                            dia: paciente.dia,
-                            mes: paciente.mes,
-                            anio: paciente.anio,
-                            sexo: paciente.sexo,
-                            direccion: paciente.direccion,
-                            correo: paciente.correo,
-                            estado_civil: paciente.estado_civil,
-                            identificacion: paciente.identificacion,
-                            tipo_identificacion: paciente.tipo_identificacion,
-                            nacionalidad: paciente.nacionalidad,
-                            municipio: paciente.municipio,
-                            id: id_responsable
-                        }
-                    )
-                    .then((response) => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Se ha realizado el registro',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Si',
-                        })
-                        handleReset();
-                        setValidated(false);
-                    }).catch((error) => {
-                        console.log(error);
-                    });
+                registroDemografico(response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    const registroDemografico = async (id_res) => {
+        await axios
+            .post("http://127.0.0.1:8000/api/demografico/",
+                {
+                    anio: paciente.anio,
+                    sexo: paciente.sexo,
+                    estado_civil: paciente.estado_civil
+                }
+            )
+            .then((response) => {
+                registroPaciente(id_res, response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    const registroPaciente = async (id_res, id_demo) => {
+        //Registrar paciente
+        await axios
+            .post("http://127.0.0.1:8000/api/paciente/",
+                {
+                    nombre: paciente.nombre,
+                    apellido: paciente.apellido,
+                    dia: paciente.dia,
+                    mes: paciente.mes,
+                    anio: paciente.anio,
+                    sexo: paciente.sexo,
+                    direccion: paciente.direccion,
+                    correo: paciente.correo,
+                    estado_civil: paciente.estado_civil,
+                    identificacion: paciente.identificacion,
+                    tipo_identificacion: paciente.tipo_identificacion,
+                    nacionalidad: paciente.nacionalidad,
+                    municipio: paciente.municipio,
+                    id: id_res.id_responsable,
+                    id_demografico: id_demo.id_demografico
+                }
+            )
+            .then((response) => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se ha realizado el registro',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Si',
+                })
+                handleReset();
+                setValidated(false);
             }).catch((error) => {
                 console.log(error);
             });
@@ -140,9 +161,9 @@ export default function RegistrarPaciente() {
 
     return (
         <>
-           {/*  <Navbar /> */}
+            {/* <Navbar /> */}
             <div className='pt-3 container'>
-                <Form validated={validated} id="registro" ref={formRef} noValidate>
+                <Form validated={validated} id="registro" noValidate>
                     <Accordion defaultActiveKey="0" >
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Datos paciente</Accordion.Header>
