@@ -52,6 +52,8 @@ Route::get('paciente', [PacienteController::class, 'index']);
 Route::post('paciente', [PacienteController::class, 'store']);
 
 Route::get('user', [UserController::class, 'index']); 
+Route::get('user/estado', [UserController::class, 'estado']); 
+Route::put('user/bloquear', [UserController::class, 'bloquear']); 
 Route::post('user', [UserController::class, 'store']);
 Route::put('user/{id}', [UserController::class, 'update']);
 Route::delete('user/{id}', [UserController::class, 'destroy']);
@@ -65,3 +67,9 @@ Route::get('menu', [MenuController::class, 'index']);
 Route::get('menu/rol', [MenuController::class, 'menuPorRol']); 
 
 Route::post('demografico', [DatoDemograficoController::class, 'store']);
+
+Route::get('menu', [MenuController::class, 'index']); 
+Route::post('menu', [MenuController::class, 'store']);
+Route::put('menu/{id}', [MenuController::class, 'update']);
+Route::delete('menu/{id}', [MenuController::class, 'destroy']);
+Route::get('menu/rol', [MenuController::class, 'menuRol']); 

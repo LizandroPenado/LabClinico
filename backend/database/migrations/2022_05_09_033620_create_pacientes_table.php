@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('nombre_paciente', 25);
             $table->string('apellido_paciente', 25);
             $table->date('fecha_nacimiento_pac');
-            //$table->string('sexo_paciente', 10);
             $table->string('direccion_paciente', 100);
             $table->string('correo_paciente', 50)->unique();
-            //$table->string('estado_civil', 15);
             $table->string('identificacion_pac', 20)->unique();
             $table->string('tipo_identificacion_pac', 9);
             $table->string('nacionalidad_pac', 15);

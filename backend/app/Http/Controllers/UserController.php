@@ -44,24 +44,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        /*$user = new User();
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
-        $user->password = $request->get('password');
-        $user->estado = $request->get('estado');
-        $user->rol_id = $request->get('rol_id');
-        $user->save();*/
-
-        $nombre = $request->get('name');
-        $email = $request->get('email');
-        $password = $request->get('password');
-        $estado = $request->get('estado');
-        $rol = $request->get('rol_id');
-
-        DB::insert(
-            'insert into users (name,email,password,estado,rol_id) values (?, ?, ?, ?, ?)',
-            [$nombre, $email, $password, $estado, $rol]
-        );
+        //
     }
 
     /**
@@ -95,12 +78,15 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        $rol = (int) $request->get('rol_id');
-        $user = User::find($request->id);
-        $user->rol_id = $rol;
+        $user = new User();
+        $user = DB::table('users')->where('id', $request->get('id'))->first();
+        $user->rol_id = $request->get('rol_id');
         $user->estado = $request->get('estado');
-        $user->save();
-        return $user;
+
+        $act_user = DB::table('users')
+            ->where('id', $request->id)
+            ->update(['rol_id' => $user->rol_id, 'estado' => $user->estado]);
+        return $act_user;
     }
 
     /**
@@ -117,33 +103,62 @@ class UserController extends Controller
 
     function register(Request $request)
     {
-        $name = $request->get('name');
-        $email = $request->get('email');
-        $estado = $request->get('estado');
-        $rol = $request->get('rol_id');
-        $password = Hash::make($request->get('password'));
+        $validatedData = $request->validate([
+            'name' => 'required|max:30|min:4',
+            'password' => 'required|max:30|min:8',
+            'email' => 'required|max:50|email|unique:users',
+            'estado' => 'required',
+            'rol_id' => 'required',
+        ], [
+            'name.required' => 'El nombre es requerido.',
+            'password.required' => 'La contraseña es requerido.',
+            'email.required' => 'El correo es requerido.',
+            'rol_id.required' => 'El rol es requerido.',
+            'email.email' => 'Tiene que ser un correo electronico.'
+        ]);
+
+        $validatedData['password'] = bcrypt($validatedData['password']);
         DB::table('users')->insert([
-            'name' =>   $name,
-            'email' =>  $email ,
-            'password'=> $password,
-            'estado'=> $estado,
-            'rol_id' => $rol
-          ]);
+            'name' =>   $validatedData['name'],
+            'email' =>  $validatedData['email'],
+            'password' => $validatedData['password'],
+            'estado' => $validatedData['estado'],
+            'rol_id' => $validatedData['rol_id']
+        ]);
     }
     function login(Request $req)
     {
         $email =  $req->input('email');
         $password = $req->input('password');
- 
-        $user = DB::table('users')->where('email',$email)->first();
-        if(!Hash::check($password, $user->password))
-        {
+
+        $user = DB::table('users')->where('email', $email)->first();
+        if (!Hash::check($password, $user->password)) {
             echo "Not Matched";
-        }
-        else
-        {
+        } else {
             //$user = DB::table('users')->where('email',$email)->first();
-           echo $user->email;
+            echo $user->email;
         }
+    }
+
+    function estado(Request $request)
+    {
+        $user = DB::table('users')
+            ->where('users.name', $request->name)
+            ->first();
+
+        return $user->estado;
+    }
+
+    public function bloquear(Request $request)
+    {
+        /* $bloc_user = DB::table('users')
+              ->where('email', $request->get('email'))
+              ->update(['estado' => 'Bloqueado']);
+        return $bloc_user; */
+
+        $bloc_user = DB::table('users')
+            ->where('users.name', $request->name)
+            ->update(['estado' => 'Bloqueado']);
+        return $bloc_user;
     }
 }

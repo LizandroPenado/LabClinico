@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email', 50)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 70);
-            $table->boolean('estado');
+            $table->string('estado', 10);
             $table->rememberToken();
             $table->unsignedBigInteger('rol_id');
             $table->foreign('rol_id')->references('id_rol')->on('rols')->onUpdate('cascade')->onDelete('cascade');
