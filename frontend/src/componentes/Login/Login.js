@@ -1,68 +1,87 @@
 import React, { useState } from 'react';
-import { Card, Container, Form, Button, FloatingLabel } from 'react-bootstrap';
+import { Card, Container, Form, Button, FloatingLabel, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import './InicioSesion.css';
 import LoginIcon from '@mui/icons-material/Login';
 import Swal from 'sweetalert2';
-/*  import { sha256 } from 'js-sha256';
-import axios from 'axios'; */
+/* import { sha256 } from 'js-sha256'; */
+import axios from 'axios';
 import AuthUser from './AuthUser';
 import PersonIcon from '@mui/icons-material/Person';
 
 
 export default function Login() {
-  /* const [respuesta, setRespuesta] = useState("");
-  const [errorContra, setErrorContra] = useState(0);*/
-  const [email, setEmail] = useState("");
+  const [errorContra, setErrorContra] = useState(0);
+  /* const [errorCorreos, setErrorCorreos] = useState([]); */
+  /* const [email, setEmail] = useState(""); */
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const { http, setToken } = AuthUser();
+  const [validated, setValidated] = useState(false);
 
-  /* const handleChange = async (e) => {
-    e.persist();
-    await this.setState({
-      form: {
-        ...this.state.form,
-        [e.target.name]: e.target.value,
-      },
-    });
-    console.log(this.state.form);
-  }; */
-
-  /* const validarCredenciales = async (e) => {
-    var contra = sha256(this.state.form.password);
-    Swal.fire({
-      icon: 'info',
-      title: 'Credenciales',
-      html: 'usuario: ' + this.state.form.usuario + '<br/><br/> contraseña: ' + contra,
-    }) */
-  /* axios.get("URL", {
-    params: {
-      usuario: this.state.form.usuario,
-      password: contra
+  const verficarEstado = async (e) => {
+    e.preventDefault();
+    setValidated(true);
+    if (password.length < 8) {
+      return;
     }
-  }).then((response) => {
-    console.log(response.data);
-    //INICIO DE SESION
-
-  }).catch((error) => {
-    console.log(error.request.status);
-    //LIMPIAR FORMULARIO
-
-    //CONTAR ERRORES DE CONTRASEÑA
-
-    //BLOQUEAR USUARIO A LOS 3 INTENTOS FALLIDOS DE CONTRASEÑA, MANDAR MENSAJE AL 3 FALLO
-
-    Swal.fire({
-      icon: 'error',
-      title: 'Usuario o contraseña no valido',
-      html: 'Verifique los datos ingresados e intente nuevamente.',
-    })
-  }) 
-}*/
+    axios
+      .get("http://127.0.0.1:8000/api/user/estado", {
+        params: {
+          name: name,
+        },
+      })
+      .then((response) => {
+        const estado = response.data;
+        if (estado === "Activo") {
+          ingresar();
+          return;
+        }
+        Swal.fire({
+          icon: 'warning',
+          title: 'Bloqueado',
+          html: 'Su usuario se encuentra bloqueado.',
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Usuario no encontrado',
+          html: 'El usuario no se encontro en la base de datos.',
+        })
+        errorDatos();
+      });
+  }
 
   const ingresar = () => {
-    http.post('/login', { email: email, password: password }).then((response) => {
+    /* console.log(errorContra);
+    if(errorContra >= 3) {
+      axios
+      .put("http://127.0.0.1:8000/api/user/bloquear", name)
+      .then((response) => {
+        console.log(response.data);
+        Swal.fire({
+          icon: 'info',
+          title: 'Bloqueado',
+          html: 'Muchos intentos erroneos, su usuario a sido bloqueado.',
+        })
+        setErrorContra(0);
+        errorDatos();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      return;
+    } */
+    http.post('/login', { name: name, password: password }).then((response) => {
       setToken(response.data.user, response.data.access_token);
+      setValidated(false);
+      Toast.fire({
+        icon: 'success',
+        title: name +', has iniciado sesión'
+      })
     }).catch((error) => {
+      setErrorContra(errorContra + 1);
       Swal.fire({
         icon: 'error',
         title: 'Usuario o contraseña no valido',
@@ -72,11 +91,23 @@ export default function Login() {
     })
   }
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   const errorDatos = () => {
-    document.getElementById("usuario").value = "";
+    document.getElementById("name").value = "";
     document.getElementById("password").value = "";
-    setEmail("");
     setPassword("");
+    setName("");
   }
 
   return (
@@ -90,37 +121,40 @@ export default function Login() {
               Inicio sesión
             </Card.Title>
             <Card.Text>
-              <Form className="formulario" validated={true}>
+              <Form className="formulario" validated={validated} noValidate>
                 <Form.Group>
                   <FloatingLabel label="Usuario" className="mb-4">
                     <Form.Control
-                      type="email"
-                      id="usuario"
-                      name="usuario"
+                      type="text"
+                      id="name"
+                      name="name"
                       placeholder="Kaleb"
-                      /* minLength="4"
-                      maxLength="15" */
-                      required={true}
-                      /* value={form.usuario}
-                      onChange={this.handleChange} */
-                      onChange={e => setEmail(e.target.value)}
+                      maxLength={30}
+                      required
+                      onChange={e => setName(e.target.value)}
                     />
                   </FloatingLabel>
                 </Form.Group>
                 <Form.Group>
                   <FloatingLabel label="Contraseña">
-                    <Form.Control
-                      type="password"
-                      id="password"
-                      name="password"
-                      placeholder="*******"
-                      
-                      autoComplete="nope"
-                      required={true}
-                      /*  value={form.password}
-                       onChange={this.handleChange} */
-                      onChange={e => setPassword(e.target.value)}
-                    />
+                    <OverlayTrigger
+                      overlay={
+                        <Tooltip>
+                          8 letras minimos obligratorios
+                        </Tooltip>
+                      }
+                    >
+                      <Form.Control
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="*******"
+                        autoComplete="nope"
+                        required
+                        minLength={8}
+                        onChange={e => setPassword(e.target.value)}
+                      />
+                    </OverlayTrigger>
                   </FloatingLabel>
                 </Form.Group>
               </Form>
@@ -129,9 +163,9 @@ export default function Login() {
           <Card.Footer>
             <div className="d-flex justify-content-center">
               <Button
+                type="submit"
                 className="boton d-flex justify-content-center"
-                onClick={ingresar}
-              /* onClick={() => this.validarCredenciales()} */>
+                onClick={verficarEstado}>
                 <LoginIcon />
                 <span className="texto-boton">Ingresar</span>
               </Button>

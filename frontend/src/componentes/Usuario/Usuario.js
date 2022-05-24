@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import ButtonTable from '../Datatable/ButtonTable';
 import AddIcon from '@mui/icons-material/Add';
 import DataTable from '../Datatable/DataTable';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 import ModalCrud from '../Modal/ModalCrud';
 import Swal from 'sweetalert2';
-import Navbar from '../Layout/Navbar';
+/* import Navbar from '../Layout/Navbar'; */
 
 function Usuario() {
   const [modalInsert, setModalInsert] = useState(false);
@@ -20,7 +20,7 @@ function Usuario() {
     name: '',
     email: '',
     password: '',
-    estado: '0',
+    estado: 'Activado',
     rol_id: 0,
   })
 
@@ -38,10 +38,16 @@ function Usuario() {
     {
       name: "name",
       label: "Nombre",
+      options: {
+        filter: false,
+      },
     },
     {
       name: "email",
       label: "Email",
+      options: {
+        filter: false,
+      },
     },
     {
       name: "id_rol",
@@ -56,17 +62,6 @@ function Usuario() {
     {
       name: "estado",
       label: "Estado",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            value === "0" ? (
-              <span>Activo</span>
-            ) : (
-              <span>Bloqueado</span>
-            )
-          );
-        },
-      },
     },
     {
       name: "nombre_rol",
@@ -78,7 +73,6 @@ function Usuario() {
       options: {
         filter: false,
         sort: false,
-        viewColumns: false,
         print: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
@@ -126,6 +120,7 @@ function Usuario() {
       id: usuario[0],
       name: usuario[1],
       rol_id: usuario[3],
+      estado: usuario[4],
     })
     setModalUpdate(true);
     setTipoModal("Actualizar");
@@ -145,24 +140,23 @@ function Usuario() {
     setUser({ ...user, [name]: value })
   }
 
-  const handleChangeCheck = (e) => {
-    const { name, value } = e.target.checked;
-    setUser({ ...user, [name]: value })
-  }
-
   const handlePost = (e) => {
     e.preventDefault();
     axios
       .post("http://127.0.0.1:8000/api/user/register", user)
       .then((response) => {
-        Swal.fire({
+        Toast.fire({
           icon: 'success',
-          title: 'Se ha realizado el registro',
+          title: 'Se ha realizado el registro'
         })
         closeInsert();
         getUser();
       }).catch((error) => {
-        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          html: 'Verifique que los datos ingresados cumplen con lo requerido'
+        })
       });
   }
 
@@ -171,9 +165,9 @@ function Usuario() {
     axios
       .put("http://127.0.0.1:8000/api/user/" + user.id, user)
       .then((response) => {
-        Swal.fire({
+        Toast.fire({
           icon: 'info',
-          title: 'Se ha actualizado el usuario: ' + user.name,
+          title: 'Se ha actualizado el usuario: ' + user.name
         })
         closeUpdate();
         getUser();
@@ -187,9 +181,9 @@ function Usuario() {
     axios
       .delete("http://127.0.0.1:8000/api/user/" + user.id)
       .then((response) => {
-        Swal.fire({
-          icon: 'info',
-          title: 'Se ha eliminado el usuario: ' + user.name,
+        Toast.fire({
+          icon: 'error',
+          title: 'Se ha eliminado el usuario: ' + user.name
         })
         closeDelete();
         getUser();
@@ -198,13 +192,25 @@ function Usuario() {
       });
   }
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 4000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   const clearData = () => {
     setUser({
       id: '',
       name: '',
       email: '',
       password: '',
-      estado: false,
+      estado: 'Activo',
       rol_id: 0,
     })
   }
@@ -213,7 +219,7 @@ function Usuario() {
 
   return (
     <>
-    {/* <Navbar/> */}
+      {/* <Navbar/> */}
       <div className='pt-3 container'>
         <DataTable
           agregar={
@@ -241,46 +247,72 @@ function Usuario() {
               <Form validated={true}>
                 <Form.Group>
                   <Form.Label>Nombre*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Bessy Dayana"
-                    maxLength={30}
-                    autoComplete="nope"
-                    required={true}
-                    value={name}
-                    onChange={handleChange}
-                  />
+                  <OverlayTrigger
+                    overlay={
+                      <Tooltip>
+                        4 letras minimos obligratorios
+                      </Tooltip>
+                    }
+                  >
+                    <Form.Control
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Bessy Dayana"
+                      maxLength={30}
+                      minLength={4}
+                      autoComplete="nope"
+                      required={true}
+                      value={name}
+                      onChange={handleChange}
+                    />
+                  </OverlayTrigger>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Email*</Form.Label>
-                  <Form.Control
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="ejemplo@dominio.com"
-                    maxLength={50}
-                    minLength={8}
-                    required={true}
-                    value={email}
-                    onChange={handleChange}
-                  />
+                  <OverlayTrigger
+                    overlay={
+                      <Tooltip>
+                        Debe contener una @ y al menos un .
+                      </Tooltip>
+                    }
+                  >
+                    <Form.Control
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="ejemplo@dominio.com"
+                      maxLength={50}
+                      minLength={8}
+                      pattern="([A-z]+)@([A-z]+)[.]([A-z.]+)"
+                      required={true}
+                      value={email}
+                      onChange={handleChange}
+                    />
+                  </OverlayTrigger>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Contraseña*</Form.Label>
-                  <Form.Control
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="******"
-                    maxLength={30}
-                    minLength={8}
-                    autoComplete="nope"
-                    required={true}
-                    value={password}
-                    onChange={handleChange}
-                  />
+                  <OverlayTrigger
+                    overlay={
+                      <Tooltip>
+                        8 letras minimos obligratorios
+                      </Tooltip>
+                    }
+                  >
+                    <Form.Control
+                      type="password"
+                      id="password"
+                      name="password"
+                      placeholder="******"
+                      maxLength={30}
+                      minLength={8}
+                      autoComplete="nope"
+                      required={true}
+                      value={password}
+                      onChange={handleChange}
+                    />
+                  </OverlayTrigger>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Rol*</Form.Label>
@@ -308,15 +340,17 @@ function Usuario() {
             ) : (
               <Form validated={true}>
                 <Form.Group>
-                  <Form.Check
+                  <Form.Select
                     id="estado"
                     name="estado"
-                    label="Estado*"
                     required={true}
                     value={estado}
-                    checked={estado}
-                    onChange={handleChangeCheck}
-                  />
+                    onChange={handleChange}
+                  >
+                    <option value='' disabled={true}>Seleccione...</option>
+                    <option value="Activado">Activado</option>
+                    <option value="Bloqueado">Bloqueado</option>
+                  </Form.Select>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Rol*</Form.Label>
@@ -364,7 +398,7 @@ function Usuario() {
           }
           abrirEliminar={modalDelete}
           cerrarEliminar={closeDelete}
-          usuario={name}
+          registro={name}
           pieModalEliminar={
             <>
               <Button variant="danger" onClick={handleDelete}>

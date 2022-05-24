@@ -34,7 +34,7 @@ export default function modalCU(props) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    ¿Esta seguro de eliminar el {props.titulo} <span className="text-primary">"{props.usuario}"</span>?
+                    ¿Esta seguro de eliminar el {props.titulo} <span className="text-primary">"{props.registro}"</span>?
                 </Modal.Body>
                 <Modal.Footer>{props.pieModalEliminar}</Modal.Footer>
             </Modal>
