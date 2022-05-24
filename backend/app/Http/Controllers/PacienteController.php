@@ -41,7 +41,7 @@ class PacienteController extends Controller
             'establecimiento_id' => 'required',
         ]); */
 
-        $fecha = $request->get('dia') . "/" . $request->get('mes') . "/" . $request->get('anio');
+        $fecha = date($request->get('anio') . "/". $request->get('mes') . "/" . $request->get('dia'));
 
         $paciente = new Paciente();
         $paciente->nombre_paciente = $request->get('nombre');
@@ -64,6 +64,12 @@ class PacienteController extends Controller
                 $paciente->demografico_id
             ]
         );
+
+        $ultimo_registro = DB::table('pacientes')
+            ->select('pacientes.id_paciente', 'pacientes.nombre_paciente')
+            ->where('pacientes.identificacion_pac', '=', $request->get('identificacion'))
+            ->first();
+        return $ultimo_registro;
     }
 
     /**

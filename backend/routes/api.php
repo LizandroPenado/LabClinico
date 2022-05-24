@@ -8,6 +8,7 @@ use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\TelefonoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -73,3 +74,6 @@ Route::post('menu', [MenuController::class, 'store']);
 Route::put('menu/{id}', [MenuController::class, 'update']);
 Route::delete('menu/{id}', [MenuController::class, 'destroy']);
 Route::get('menu/rol', [MenuController::class, 'menuRol']); 
+
+Route::get('telefono', [TelefonoController::class, 'index']); 
+Route::post('telefono', [TelefonoController::class, 'store']);
