@@ -24,7 +24,7 @@ function Inicio() {
             <Container fluid className='pt-5 contenedor-inicio'>
                 <Row className='informacion-inicio'>
                     <Col sm={4}>
-                        <Typography variant='h3' className='mensaje-bienvenida'>Bienvenido </Typography>
+                        <Typography variant='h3' className='mensaje-bienvenida'>Bienvenid@ </Typography>
                         <Typography variant='h4' className='mensaje-bienvenida text-danger'>{ userdetail.name }</Typography>
                     </Col>
                     <Col sm={8}>
