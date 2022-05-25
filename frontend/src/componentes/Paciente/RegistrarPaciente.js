@@ -1,10 +1,11 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Form, Col, Row, Button, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import AuthUser from '../Login/AuthUser';
 /* import Navbar from '../Layout/Navbar'; */
 
 export default function RegistrarPaciente() {
+    const { http } = AuthUser();
     const [departament, setDepartament] = useState([]);
     const [munici, setMunici] = useState([]);
     const [validated, setValidated] = useState(false);
@@ -48,8 +49,7 @@ export default function RegistrarPaciente() {
     }, []);
 
     const getDepartament = () => {
-        axios
-            .get("http://127.0.0.1:8000/api/departamento/")
+        http.get("http://127.0.0.1:8000/api/departamento/")
             .then((response) => {
                 setDepartament(response.data);
             }).catch((error) => {
@@ -96,7 +96,7 @@ export default function RegistrarPaciente() {
             return;
         }
         //Registrar al responsable
-        await axios
+        await http
             .post("http://127.0.0.1:8000/api/responsable/", responsable)
             .then((response) => {
                 registroDemografico(response.data);
@@ -107,7 +107,7 @@ export default function RegistrarPaciente() {
 
     const registroDemografico = async (id_res) => {
         //Registrar los datos demograficos
-        await axios
+        await http
             .post("http://127.0.0.1:8000/api/demografico/",
                 {
                     anio: paciente.anio,
@@ -124,7 +124,7 @@ export default function RegistrarPaciente() {
 
     const registroPaciente = async (id_res, id_demo) => {
         //Registrar paciente
-        await axios
+        await http
             .post("http://127.0.0.1:8000/api/paciente/",
                 {
                     nombre: paciente.nombre,
@@ -165,7 +165,7 @@ export default function RegistrarPaciente() {
         } else {
             tel3 = telefono3;
         }
-        await axios
+        await http
             .post("http://127.0.0.1:8000/api/telefono/", {
                 telefono1: telefono1,
                 telefono2: tel2,
@@ -187,8 +187,7 @@ export default function RegistrarPaciente() {
     const handleMunicipio = (e) => {
         const { name, value } = e.target;
         setPaciente({ ...paciente, [name]: value });
-        axios
-            .get("http://127.0.0.1:8000/api/municipio/departamentos/", {
+        http.get("http://127.0.0.1:8000/api/municipio/departamentos/", {
                 params: {
                     departamento: value,
                 },

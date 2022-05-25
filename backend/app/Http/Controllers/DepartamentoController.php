@@ -37,10 +37,15 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $departamento = new Departamento();
+        /* $departamento = new Departamento();
         $departamento->nombre_dep = $request->get('nombre_dep');
         $departamento->codigo_dep = $request->get('codigo_dep');
-        $departamento->save();
+        $departamento->save(); */
+
+        DB::insert(
+            'insert into departamentos (nombre_dep,codigo_dep) values (?, ?)',
+            [ $request->get('nombre_dep'), $request->get('codigo_dep')]
+        );
     }
 
     /**

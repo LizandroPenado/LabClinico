@@ -3,11 +3,12 @@ import ButtonTable from '../Datatable/ButtonTable';
 import AddIcon from '@mui/icons-material/Add';
 import DataTable from '../Datatable/DataTable';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import axios from 'axios';
 import ModalCrud from '../Modal/ModalCrud';
 import Swal from 'sweetalert2';
+import AuthUser from '../Login/AuthUser';
 
 export default function GestionMenu() {
+    const { http } = AuthUser();
     const [modalInsert, setModalInsert] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
@@ -84,8 +85,7 @@ export default function GestionMenu() {
     }, [])
 
     const getMenu = () => {
-        axios
-            .get("http://127.0.0.1:8000/api/menu/rol")
+        http.get("http://127.0.0.1:8000/api/menu/rol")
             .then((response) => {
                 setMenus(response.data);
             }).catch((error) => {
@@ -94,8 +94,7 @@ export default function GestionMenu() {
     }
 
     const getRoles = () => {
-        axios
-            .get("http://127.0.0.1:8000/api/rol/")
+        http.get("http://127.0.0.1:8000/api/rol/")
             .then((response) => {
                 setRoles(response.data);
             }).catch((error) => {
@@ -150,8 +149,7 @@ export default function GestionMenu() {
             });
             return;
         }
-        axios
-            .post("http://127.0.0.1:8000/api/menu", menu)
+        http.post("http://127.0.0.1:8000/api/menu", menu)
             .then((response) => {
                 Toast.fire({
                     icon: 'success',
@@ -178,8 +176,7 @@ export default function GestionMenu() {
             });
             return;
         }
-        axios
-            .put("http://127.0.0.1:8000/api/menu/" + menu.id_menu, menu)
+        http.put("http://127.0.0.1:8000/api/menu/" + menu.id_menu, menu)
             .then((response) => {
                 Toast.fire({
                     icon: 'info',
@@ -198,8 +195,7 @@ export default function GestionMenu() {
 
     const handleDelete = (e) => {
         e.preventDefault();
-        axios
-            .delete("http://127.0.0.1:8000/api/menu/" + menu.id_menu)
+        http.delete("http://127.0.0.1:8000/api/menu/" + menu.id_menu)
             .then((response) => {
                 Toast.fire({
                     icon: 'error',

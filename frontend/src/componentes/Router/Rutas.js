@@ -6,16 +6,22 @@ import Usuario from '../Usuario/Usuario';
 import Rol from '../Rol/Rol';
 import RegistrarPaciente from '../Paciente/RegistrarPaciente';
 import GestionMenu from '../Menu/GestionMenu';
+import AuthUser from '../Login/AuthUser';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
+    const { token } = AuthUser();
 
     useEffect(() => {
         setDataUser(JSON.parse(sessionStorage.getItem('user')))
     }, [])
     return (
         <Routes>
-            <Route path="/" element={<InicioSesion />} />
+            { !token ? (
+                 <Route path="/" element={<InicioSesion />} />
+            ):(
+                <></>
+            )}
             <Route path="/inicio" element={<Inicio />} />
             {(() => {
                 switch (dataUser.rol_id) {

@@ -25,7 +25,7 @@ export default function AuthUser() {
     const [user, setUser] = useState(getUser());
 
     const saveToken = (user, token, rol_id) => {
-        
+
         sessionStorage.setItem('token', JSON.stringify(token));
         sessionStorage.setItem('user', JSON.stringify(user));
         sessionStorage.setItem('rol', JSON.stringify(rol_id));
@@ -37,7 +37,7 @@ export default function AuthUser() {
 
     const logout = () => {
         sessionStorage.clear();
-         navigate('/');
+        navigate('/');
     }
 
     const http = axios.create({

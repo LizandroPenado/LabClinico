@@ -29,51 +29,51 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('user/register', [UserController::class,'register']);
+Route::post('user/register', [UserController::class, 'register']);
 /* Route::post('/login', 'App\Http\Controllers\AuthController@login'); */
 /* Route::post('register', [AuthController::class,'register']); */
 /* Route::post('/register', 'App\Http\Controllers\AuthController@register'); */
 
-Route::group(['middleware'=>'api'], function(){
+Route::group(['middleware' => 'api'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 });
 
-Route::get('departamento', [DepartamentoController::class, 'index']); 
-Route::post('departamento', [DepartamentoController::class, 'store']); 
+Route::group(['middleware' => ['jwt.verify']], function () {
+    Route::get('departamento', [DepartamentoController::class, 'index']);
+    Route::post('departamento', [DepartamentoController::class, 'store']);
+    Route::get('municipio', [MunicipioController::class, 'index']);
+    Route::get('municipio/departamentos', [MunicipioController::class, 'filtroDepartamento']);
 
-Route::get('municipio', [MunicipioController::class, 'index']); 
-Route::get('municipio/departamentos', [MunicipioController::class, 'filtroDepartamento']);
+    Route::get('responsable', [ResponsableController::class, 'index']);
+    Route::post('responsable', [ResponsableController::class, 'store']);
 
-Route::get('responsable', [ResponsableController::class, 'index']); 
-Route::post('responsable', [ResponsableController::class, 'store']);
+    Route::get('paciente', [PacienteController::class, 'index']);
+    Route::post('paciente', [PacienteController::class, 'store']);
 
-Route::get('paciente', [PacienteController::class, 'index']); 
-Route::post('paciente', [PacienteController::class, 'store']);
+    Route::get('user', [UserController::class, 'index']);
+    
+    Route::put('user/bloquear', [UserController::class, 'bloquear']);
+    Route::post('user', [UserController::class, 'store']);
+    Route::put('user/{id}', [UserController::class, 'update']);
+    Route::delete('user/{id}', [UserController::class, 'destroy']);
 
-Route::get('user', [UserController::class, 'index']); 
-Route::get('user/estado', [UserController::class, 'estado']); 
-Route::put('user/bloquear', [UserController::class, 'bloquear']); 
-Route::post('user', [UserController::class, 'store']);
-Route::put('user/{id}', [UserController::class, 'update']);
-Route::delete('user/{id}', [UserController::class, 'destroy']);
+    Route::get('rol', [RolController::class, 'index']);
+    Route::post('rol', [RolController::class, 'store']);
+    Route::put('rol/{id}', [RolController::class, 'update']);
+    Route::delete('rol/{id}', [RolController::class, 'destroy']);
 
-Route::get('rol', [RolController::class, 'index']); 
-Route::post('rol', [RolController::class, 'store']);
-Route::put('rol/{id}', [RolController::class, 'update']);
-Route::delete('rol/{id}', [RolController::class, 'destroy']);
+    Route::post('demografico', [DatoDemograficoController::class, 'store']);
 
-Route::get('menu', [MenuController::class, 'index']); 
-Route::get('menu/rol', [MenuController::class, 'menuPorRol']); 
+    Route::get('menu', [MenuController::class, 'index']);
+    Route::post('menu', [MenuController::class, 'store']);
+    Route::put('menu/{id}', [MenuController::class, 'update']);
+    Route::delete('menu/{id}', [MenuController::class, 'destroy']);
+    Route::get('menu/rol', [MenuController::class, 'menuRol']);
 
-Route::post('demografico', [DatoDemograficoController::class, 'store']);
+    Route::get('telefono', [TelefonoController::class, 'index']);
+    Route::post('telefono', [TelefonoController::class, 'store']);
+});
 
-Route::get('menu', [MenuController::class, 'index']); 
-Route::post('menu', [MenuController::class, 'store']);
-Route::put('menu/{id}', [MenuController::class, 'update']);
-Route::delete('menu/{id}', [MenuController::class, 'destroy']);
-Route::get('menu/rol', [MenuController::class, 'menuRol']); 
-
-Route::get('telefono', [TelefonoController::class, 'index']); 
-Route::post('telefono', [TelefonoController::class, 'store']);
+Route::get('user/estado', [UserController::class, 'estado']);

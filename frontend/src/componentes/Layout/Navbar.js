@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import Logo from './Logo';
-import { Button, NavbarBrand } from 'react-bootstrap';
-import { Container, Navbar, Nav, Offcanvas } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { Container, Navbar, Nav, Offcanvas, Row, Col } from 'react-bootstrap';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from "react-router-dom";
 import AuthUser from '../Login/AuthUser';
+import Swal from 'sweetalert2';
 
 export default function NavbarBase() {
   const { token, logout } = AuthUser();
   const { http } = AuthUser();
   const [userdetail, setUserdetail] = useState('');
   const [fecha, setFecha] = useState();
+  const [hora, setHora] = useState();
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
@@ -22,6 +24,15 @@ export default function NavbarBase() {
     getMenus();
   }, []);
 
+  useEffect(() => {
+    var hoy = new Date();
+    /* var hora = hoy.getHours() + ':' + hoy.getMinutes(0,0)+ ':' + hoy.getSeconds() ; */
+    //var hora = hoy.setHours(0, 0, 0, 0);
+    var hora = hoy.toLocaleTimeString();
+    setHora(hora);
+
+  });
+
   const fetchUserDetail = () => {
     http.post('/me').then((res) => {
       setUserdetail(res.data);
@@ -30,13 +41,28 @@ export default function NavbarBase() {
   const logoutUSer = () => {
     if (token !== undefined) {
       logout();
+      Toast.fire({
+        icon: 'info',
+        title: 'Ha cerrado sesión, hasta pronto'
+      })
     }
   }
   const getMenus = () => {
-      http.get('/menu').then((res) => {
-        setMenu(res.data);
-      });
+    http.get('/menu').then((res) => {
+      setMenu(res.data);
+    });
   }
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 4000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  });
   return (
     <>
       <Navbar className='navbar' expand={false}>
@@ -73,14 +99,26 @@ export default function NavbarBase() {
                 })}
               </Nav>
             </Offcanvas.Body>
+            <Button variant='danger' onClick={logoutUSer}><LogoutIcon /> Cerrar Sesión</Button>
           </Navbar.Offcanvas>
-          <NavbarBrand>
-            <span className='hora'>{fecha}</span> {' '}
-            <span className='usuario'>{userdetail.name}</span> {' '}
-            <Button variant='danger' size='sm' onClick={logoutUSer}>
+          {/* <NavbarBrand> */}
+          <Row className='text-center'>
+            <Col>
+              <span className='info'>Fecha:</span><br/>
+              <span className='hora'>{fecha}</span>
+            </Col>
+            {/* <Col>
+              <span className='hora'>Hora: <br/>{hora}</span> {' '}
+              </Col> */}
+            <Col>
+              <span className='info'>Usuario:</span><br/>
+              <span className='usuario'>{userdetail.name}</span>
+            </Col>
+          </Row>
+          {/* <Button variant='danger' size='sm' onClick={logoutUSer}>
               <LogoutIcon />
-            </Button>
-          </NavbarBrand>
+            </Button> */}
+          {/* </NavbarBrand> */}
         </Container>
       </Navbar>
     </>
