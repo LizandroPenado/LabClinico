@@ -5,7 +5,7 @@
 
 .usuario{
   color: #fff;
-  padding-right: 2rem;
+  font-size: medium;
 }
 
 .despliegue{
@@ -64,5 +64,10 @@
 
 .hora{
   color: #fff;
-  padding-right: 1rem;
+  font-size: medium;
+}
+
+.info{
+  color:darkblue;
+  font-weight: bold;
 }
