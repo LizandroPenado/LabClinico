@@ -74,7 +74,7 @@ export default function Login() {
       return;
     } */
     http.post('/login', { name: name, password: password }).then((response) => {
-      setToken(response.data.user, response.data.access_token);
+      setToken(response.data.user, response.data.access_token, response.data.rol);
       setValidated(false);
       Toast.fire({
         icon: 'success',

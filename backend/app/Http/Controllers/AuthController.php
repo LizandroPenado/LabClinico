@@ -77,11 +77,19 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $data = auth()->user();
+        $user = DB::table('users')
+            ->join('rols', 'rols.id_rol', '=', 'users.rol_id')
+            ->select('rols.id_rol', 'rols.codigo_rol', 'rols.nombre_rol')
+            ->where('users.id', $data->id)
+            ->get();
+            
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => auth()->user(),
+            'rol' => $user[0]
         ]);
     }
 
