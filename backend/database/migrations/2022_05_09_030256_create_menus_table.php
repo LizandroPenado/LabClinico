@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id('id_menu');
             $table->string('titulo', 20);
-            $table->string('url', 15);
+            $table->string('url', 15)->unique();
             $table->unsignedBigInteger('rol_id');
             $table->foreign('rol_id')->references('id_rol')->on('rols')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
