@@ -6,6 +6,7 @@ import Usuario from '../Usuario/Usuario';
 import Rol from '../Rol/Rol';
 import RegistrarPaciente from '../Paciente/RegistrarPaciente';
 import GestionMenu from '../Menu/GestionMenu';
+import Privilegios from '../Privilegios/Privilegios';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -25,6 +26,7 @@ function Rutas() {
                                 <Route path="/usuario" element={<Usuario />} />
                                 <Route path="/rol" element={<Rol />} />
                                 <Route path="/menu" element={<GestionMenu />} />
+                                <Route path="/privilegios" element={<Privilegios />} />
                             </>
                         )
                     case "2":

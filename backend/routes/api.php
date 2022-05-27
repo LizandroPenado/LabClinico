@@ -9,6 +9,7 @@ use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PrivilegiosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -73,3 +74,8 @@ Route::post('menu', [MenuController::class, 'store']);
 Route::put('menu/{id}', [MenuController::class, 'update']);
 Route::delete('menu/{id}', [MenuController::class, 'destroy']);
 Route::get('menu/rol', [MenuController::class, 'menuRol']); 
+
+Route::get('privilegios', [PrivilegiosController::class, 'index']); 
+Route::post('privilegios', [PrivilegiosController::class, 'store']);
+Route::put('privilegios/{id}', [PrivilegiosController::class, 'update']);
+Route::delete('privilegios/{id}', [PrivilegiosController::class, 'destroy']);
