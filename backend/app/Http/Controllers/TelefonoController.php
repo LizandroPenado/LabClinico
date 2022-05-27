@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TelefonoController extends Controller
 {
@@ -34,7 +35,32 @@ class TelefonoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'telefono1' => 'required|max:9|min:8',
+            'telefono2' => 'max:9|min:8',
+            'telefono3' => 'max:9|min:8',
+            'paciente_id' => 'required',
+        ], [
+            'telefono1.required' => 'El telefono es requerido.',
+            'paciente_id.required' => 'El paciente es requerido.',
+        ]);
+
+        DB::insert(
+            'insert into telefonos (numero, paciente_id) values (?, ?)',
+            [$validatedData['telefono1'], $validatedData['paciente_id']]
+        );
+        if (strlen($validatedData['telefono2']) == 8) {
+            DB::insert(
+                'insert into telefonos (numero, paciente_id) values (?, ?)',
+                [$validatedData['telefono2'], $validatedData['paciente_id']]
+            );
+        }
+        if (strlen($validatedData['telefono3']) == 8) {
+            DB::insert(
+                'insert into telefonos (numero, paciente_id) values (?, ?)',
+                [$validatedData['telefono3'], $validatedData['paciente_id']]
+            );
+        }
     }
 
     /**

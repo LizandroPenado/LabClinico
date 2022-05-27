@@ -36,7 +36,7 @@ class ResponsableController extends Controller
      */
     public function store(Request $request)
     {
-        $fecha = $request->get('dia_res') . "/". $request->get('mes_res') . "/" . $request->get('anio_res');
+        $fecha = date($request->get('anio_res') . "/". $request->get('mes_res') . "/" . $request->get('dia_res'));
 
         $responsable = new Responsable();
         $responsable->nombre_responsable = $request->get('nombre_res');

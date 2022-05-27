@@ -3,12 +3,13 @@ import ButtonTable from '../Datatable/ButtonTable';
 import AddIcon from '@mui/icons-material/Add';
 import DataTable from '../Datatable/DataTable';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import axios from 'axios';
 import ModalCrud from '../Modal/ModalCrud';
 import Swal from 'sweetalert2';
+import AuthUser from '../Login/AuthUser';
 /* import Navbar from '../Layout/Navbar'; */
 
 function Usuario() {
+  const { http } = AuthUser();
   const [modalInsert, setModalInsert] = useState(false);
   const [modalUpdate, setModalUpdate] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
@@ -92,7 +93,7 @@ function Usuario() {
   }, [])
 
   const getUser = () => {
-    axios
+    http
       .get("http://127.0.0.1:8000/api/user/")
       .then((response) => {
         setUsers(response.data);
@@ -102,7 +103,7 @@ function Usuario() {
   }
 
   const getRoles = () => {
-    axios
+    http
       .get("http://127.0.0.1:8000/api/rol/")
       .then((response) => {
         setRoles(response.data);
@@ -142,7 +143,7 @@ function Usuario() {
 
   const handlePost = (e) => {
     e.preventDefault();
-    axios
+    http
       .post("http://127.0.0.1:8000/api/user/register", user)
       .then((response) => {
         Toast.fire({
@@ -162,7 +163,7 @@ function Usuario() {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios
+    http
       .put("http://127.0.0.1:8000/api/user/" + user.id, user)
       .then((response) => {
         Toast.fire({
@@ -178,7 +179,7 @@ function Usuario() {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    axios
+    http
       .delete("http://127.0.0.1:8000/api/user/" + user.id)
       .then((response) => {
         Toast.fire({

@@ -16,7 +16,7 @@ export default function AuthUser() {
         return user_detail;
     }
     const getRol = () => {
-        const rolString = sessionStorage.getItem('rol_id');
+        const rolString = sessionStorage.getItem('rol');
         const rol_detail = JSON.parse(rolString);
         return rol_detail;
     }
@@ -24,20 +24,20 @@ export default function AuthUser() {
     const [token, setToken] = useState(getToken());
     const [user, setUser] = useState(getUser());
 
-    const saveToken = (user, token, rol_id) => {
-        
+    const saveToken = (user, token, rol) => {
+
         sessionStorage.setItem('token', JSON.stringify(token));
         sessionStorage.setItem('user', JSON.stringify(user));
-        sessionStorage.setItem('rol', JSON.stringify(rol_id));
+        sessionStorage.setItem('rol', JSON.stringify(rol));
         setToken(token);
         setUser(user);
-        setRol(rol_id);
+        setRol(rol);
         navigate('/inicio');
     }
 
     const logout = () => {
         sessionStorage.clear();
-         navigate('/');
+        navigate('/');
     }
 
     const http = axios.create({

@@ -6,21 +6,28 @@ import Usuario from '../Usuario/Usuario';
 import Rol from '../Rol/Rol';
 import RegistrarPaciente from '../Paciente/RegistrarPaciente';
 import GestionMenu from '../Menu/GestionMenu';
+import AuthUser from '../Login/AuthUser';
+import ConsultarExamen from '../Examenes/ConsultarExamen';
 import Privilegios from '../Privilegios/Privilegios';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
+    const { token } = AuthUser();
 
     useEffect(() => {
-        setDataUser(JSON.parse(sessionStorage.getItem('user')))
+        setDataUser(JSON.parse(sessionStorage.getItem('rol')))
     }, [])
     return (
         <Routes>
-            <Route path="/" element={<InicioSesion />} />
+            { !token ? (
+                 <Route path="/" element={<InicioSesion />} />
+            ):(
+                <></>
+            )}
             <Route path="/inicio" element={<Inicio />} />
             {(() => {
-                switch (dataUser.rol_id) {
-                    case "1":
+                switch (dataUser.codigo_rol) {
+                    case "ADM":
                         return (
                             <>
                                 <Route path="/usuario" element={<Usuario />} />
@@ -29,18 +36,19 @@ function Rutas() {
                                 <Route path="/privilegios" element={<Privilegios />} />
                             </>
                         )
-                    case "2":
+                    case "SEC":
                         return (
                             <>
                                 <Route path="/registrar" element={<RegistrarPaciente />} />
                             </>
                         )
-                    case "3":
+                    case "LAB":
                         return (
                             <>
+                            <Route path="/orden" element={<ConsultarExamen />} />
                             </>
                         )
-                    case "4":
+                    case "JLA":
                         return (
                             <>
                             </>

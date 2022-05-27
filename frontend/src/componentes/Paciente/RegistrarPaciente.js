@@ -1,13 +1,19 @@
-import axios from 'axios';
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Col, Row, Button, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import AuthUser from '../Login/AuthUser';
 /* import Navbar from '../Layout/Navbar'; */
 
 export default function RegistrarPaciente() {
+    const { http } = AuthUser();
     const [departament, setDepartament] = useState([]);
     const [munici, setMunici] = useState([]);
     const [validated, setValidated] = useState(false);
+    const [telefonos, setTelefonos] = useState({
+        telefono1: '',
+        telefono2: '',
+        telefono3: '',
+    });
     const [paciente, setPaciente] = useState({
         nombre: '',
         apellido: '',
@@ -43,8 +49,7 @@ export default function RegistrarPaciente() {
     }, []);
 
     const getDepartament = () => {
-        axios
-            .get("http://127.0.0.1:8000/api/departamento/")
+        http.get("http://127.0.0.1:8000/api/departamento/")
             .then((response) => {
                 setDepartament(response.data);
             }).catch((error) => {
@@ -62,11 +67,36 @@ export default function RegistrarPaciente() {
         setResponsable({ ...responsable, [name]: value })
     }
 
+    const handleChangeTelefono = (e) => {
+        const { name, value } = e.target
+        setTelefonos({ ...telefonos, [name]: value })
+    }
+
     const handlePost = async (e) => {
         e.preventDefault();
         setValidated(true);
+        if (nombre === "" || apellido === "" || tipo_identificacion === "" || identificacion === "" || departamento === "" || municipio === "" || direccion === "" ||
+            telefono1 === "" || anio === "" || dia === "" || mes === "" || correo === "" || sexo === "" || estado_civil === "" || nacionalidad === "") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Debe ingresar todos los datos requeridos del paciente',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Si',
+            })
+            return;
+        }
+        if (nombre_res === "" || apellido_res === "" || tipo_identificacion_res === "" || identificacion_res === "" || telefono_res === "" || anio_res === "" ||
+            dia_res === "" || mes_res === "" || correo_res === "") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Debe ingresar todos los datos requeridos del resposable',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Si',
+            })
+            return;
+        }
         //Registrar al responsable
-        await axios
+        await http
             .post("http://127.0.0.1:8000/api/responsable/", responsable)
             .then((response) => {
                 registroDemografico(response.data);
@@ -76,7 +106,8 @@ export default function RegistrarPaciente() {
     }
 
     const registroDemografico = async (id_res) => {
-        await axios
+        //Registrar los datos demograficos
+        await http
             .post("http://127.0.0.1:8000/api/demografico/",
                 {
                     anio: paciente.anio,
@@ -93,7 +124,7 @@ export default function RegistrarPaciente() {
 
     const registroPaciente = async (id_res, id_demo) => {
         //Registrar paciente
-        await axios
+        await http
             .post("http://127.0.0.1:8000/api/paciente/",
                 {
                     nombre: paciente.nombre,
@@ -114,11 +145,37 @@ export default function RegistrarPaciente() {
                 }
             )
             .then((response) => {
-                Swal.fire({
+                registroTelefonos(response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    const registroTelefonos = async (id_pac) => {
+        //Registrar los datos del telefonos paciente
+        let tel2;
+        let tel3;
+        if (telefono2 === '') {
+            tel2 = "123456789";
+        } else {
+            tel2 = telefono2;
+        }
+        if (telefono3 === '') {
+            tel3 = "123456789";
+        } else {
+            tel3 = telefono3;
+        }
+        await http
+            .post("http://127.0.0.1:8000/api/telefono/", {
+                telefono1: telefono1,
+                telefono2: tel2,
+                telefono3: tel3,
+                paciente_id: id_pac.id_paciente
+            })
+            .then((response) => {
+                Toast.fire({
                     icon: 'success',
-                    title: 'Se ha realizado el registro',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Si',
+                    title: 'Se ha realizado el registro'
                 })
                 handleReset();
                 setValidated(false);
@@ -130,8 +187,7 @@ export default function RegistrarPaciente() {
     const handleMunicipio = (e) => {
         const { name, value } = e.target;
         setPaciente({ ...paciente, [name]: value });
-        axios
-            .get("http://127.0.0.1:8000/api/municipio/departamentos/", {
+        http.get("http://127.0.0.1:8000/api/municipio/departamentos/", {
                 params: {
                     departamento: value,
                 },
@@ -154,16 +210,32 @@ export default function RegistrarPaciente() {
             nombre_res: '', apellido_res: '', identificacion_res: '', tipo_identificacion_res: '', correo_res: '',
             fecha_nacimiento_res: '', dia_res: '', mes_res: '', anio_res: '', telefono_res: '',
         });
+        setTelefonos({
+            telefono1: '', telefono2: '', telefono3: '',
+        })
     }
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
 
     const { nombre, apellido, identificacion, tipo_identificacion, departamento, municipio, correo, direccion, dia, mes, anio, sexo, estado_civil, nacionalidad } = paciente;
     const { nombre_res, apellido_res, identificacion_res, tipo_identificacion_res, correo_res, dia_res, mes_res, anio_res, telefono_res } = responsable;
+    const { telefono1, telefono2, telefono3 } = telefonos;
 
     return (
         <>
             {/* <Navbar /> */}
             <div className='pt-3 container'>
-                <Form validated={validated} id="registro" noValidate>
+                <Form validated={validated} id="registro" noValidate onSubmit={handlePost}>
                     <Accordion defaultActiveKey="0" >
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Datos paciente</Accordion.Header>
@@ -235,7 +307,7 @@ export default function RegistrarPaciente() {
                                         <OverlayTrigger
                                             overlay={
                                                 <Tooltip>
-                                                    9 digitos obligatorios
+                                                    9 digitos obligatorios minimos
                                                 </Tooltip>
                                             }
                                         >
@@ -314,7 +386,75 @@ export default function RegistrarPaciente() {
                                             />
                                         </OverlayTrigger>
                                     </Form.Group>
-
+                                </Row>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} md="4">
+                                        <Form.Label>Télefono #1*</Form.Label>
+                                        <OverlayTrigger
+                                            overlay={
+                                                <Tooltip>
+                                                    8 digitos obligratorios iniciando con 7,2 o 6
+                                                </Tooltip>
+                                            }
+                                        >
+                                            <Form.Control
+                                                id='telefono1'
+                                                name='telefono1'
+                                                value={telefono1}
+                                                onChange={handleChangeTelefono}
+                                                required
+                                                autoComplete='true'
+                                                maxLength={8}
+                                                pattern="([267]{1})([0-9]{7})"
+                                                type="text"
+                                                placeholder="77767475"
+                                            />
+                                        </OverlayTrigger>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md="4">
+                                        <Form.Label>Télefono #2</Form.Label>
+                                        <OverlayTrigger
+                                            overlay={
+                                                <Tooltip>
+                                                    8 digitos obligratorios iniciando con 7,2 o 6
+                                                </Tooltip>
+                                            }
+                                        >
+                                            <Form.Control
+                                                id='telefono2'
+                                                name='telefono2'
+                                                value={telefono2}
+                                                onChange={handleChangeTelefono}
+                                                autoComplete='true'
+                                                maxLength={8}
+                                                pattern="([267]{1})([0-9]{7})"
+                                                type="text"
+                                                placeholder="77767475"
+                                            />
+                                        </OverlayTrigger>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md="4">
+                                        <Form.Label>Télefono #3</Form.Label>
+                                        <OverlayTrigger
+                                            overlay={
+                                                <Tooltip>
+                                                    8 digitos obligratorios iniciando con 7,2 o 6
+                                                </Tooltip>
+                                            }
+                                        >
+                                            <Form.Control
+                                                id='telefono3'
+                                                name='telefono3'
+                                                value={telefono3}
+                                                onChange={handleChangeTelefono}
+                                                autoComplete='true'
+                                                maxLength={8}
+                                                pattern="([267]{1})([0-9]{7})"
+                                                type="text"
+                                                placeholder="77767475"
+                                            />
+                                        </OverlayTrigger>
+                                    </Form.Group>
                                 </Row>
                                 <Row className="mb-3">
                                     <Form.Label>Fecha nacimiento*</Form.Label>
@@ -365,7 +505,7 @@ export default function RegistrarPaciente() {
                                     <OverlayTrigger
                                         overlay={
                                             <Tooltip>
-                                                Digitos entre 1915 al 2022
+                                                Digitos entre 00 a 99
                                             </Tooltip>
                                         }
                                     >
@@ -544,7 +684,7 @@ export default function RegistrarPaciente() {
                                         <OverlayTrigger
                                             overlay={
                                                 <Tooltip>
-                                                    9 digitos obligatorios
+                                                    9 digitos obligatorios minimos
                                                 </Tooltip>
                                             }
                                         >
@@ -559,7 +699,7 @@ export default function RegistrarPaciente() {
                                                 maxLength={20}
                                                 pattern="[0-9]+"
                                                 type="text"
-                                                placeholder="1020582-2"
+                                                placeholder="10205822"
                                             />
                                         </OverlayTrigger>
                                     </Form.Group>
@@ -613,7 +753,7 @@ export default function RegistrarPaciente() {
                                     <OverlayTrigger
                                         overlay={
                                             <Tooltip>
-                                                Digitos entre 1915 al 2022
+                                                Digitos entre 00 a 99
                                             </Tooltip>
                                         }
                                     >
@@ -657,11 +797,11 @@ export default function RegistrarPaciente() {
                                         </OverlayTrigger>
                                     </Form.Group>
                                     <Form.Group as={Col} md="6">
-                                        <Form.Label as={Col}>Télefono*</Form.Label>
+                                        <Form.Label>Télefono*</Form.Label>
                                         <OverlayTrigger
                                             overlay={
                                                 <Tooltip>
-                                                    8 digitos obligratorios
+                                                    8 digitos obligratorios iniciando con 7,2 o 6
                                                 </Tooltip>
                                             }
                                         >
@@ -672,7 +812,7 @@ export default function RegistrarPaciente() {
                                                 onChange={handleChangeResponsable}
                                                 required
                                                 autoComplete='true'
-                                                maxLength={9}
+                                                maxLength={8}
                                                 pattern="([267]{1})([0-9]{7})"
                                                 type="text"
                                                 placeholder="77767475"
@@ -685,7 +825,7 @@ export default function RegistrarPaciente() {
                     </Accordion>
                     <Row className='mb-3 pt-5 '>
                         <Col className="text-end">
-                            <Button type="submit" variant='success' onClick={handlePost}>Registrar</Button>
+                            <Button type="submit" variant='success' /* onClick={handlePost} */>Registrar</Button>
                         </Col>
                         <Col>
                             <span className='text-danger'>Campos obligatorios *</span>

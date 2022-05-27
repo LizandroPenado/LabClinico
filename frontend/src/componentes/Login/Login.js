@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Container, Form, Button, FloatingLabel, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Card, Container, Form, Button, FloatingLabel } from 'react-bootstrap';
 import './InicioSesion.css';
 import LoginIcon from '@mui/icons-material/Login';
 import Swal from 'sweetalert2';
@@ -74,11 +74,11 @@ export default function Login() {
       return;
     } */
     http.post('/login', { name: name, password: password }).then((response) => {
-      setToken(response.data.user, response.data.access_token);
+      setToken(response.data.user, response.data.access_token, response.data.rol);
       setValidated(false);
       Toast.fire({
         icon: 'success',
-        title: name +', has iniciado sesión'
+        title: name + ', has iniciado sesión'
       })
     }).catch((error) => {
       setErrorContra(errorContra + 1);
@@ -137,24 +137,16 @@ export default function Login() {
                 </Form.Group>
                 <Form.Group>
                   <FloatingLabel label="Contraseña">
-                    <OverlayTrigger
-                      overlay={
-                        <Tooltip>
-                          8 letras minimos obligratorios
-                        </Tooltip>
-                      }
-                    >
-                      <Form.Control
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="*******"
-                        autoComplete="nope"
-                        required
-                        minLength={8}
-                        onChange={e => setPassword(e.target.value)}
-                      />
-                    </OverlayTrigger>
+                    <Form.Control
+                      type="password"
+                      id="password"
+                      name="password"
+                      placeholder="*******"
+                      autoComplete="nope"
+                      required
+                      minLength={8}
+                      onChange={e => setPassword(e.target.value)}
+                    />
                   </FloatingLabel>
                 </Form.Group>
               </Form>
