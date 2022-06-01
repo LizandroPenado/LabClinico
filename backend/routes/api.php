@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClinicaController;
 use App\Http\Controllers\DatoDemograficoController;
 use App\Http\Controllers\DepartamentoController;
+use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PacienteController;
@@ -91,4 +94,18 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('tipoexamen', [TipoExamenController::class, 'store']);
     Route::put('tipoexamen/{id}', [TipoExamenController::class, 'update']);
     Route::delete('tipoexamen/{id}', [TipoExamenController::class, 'destroy']);
+
+    Route::get('clinica', [ClinicaController::class, 'index']);
+    Route::post('clinica', [ClinicaController::class, 'store']);
+    Route::put('clinica/{id}', [ClinicaController::class, 'update']);
+    Route::delete('clinica/{id}', [ClinicaController::class, 'destroy']);
+
+    Route::get('empleado', [EmpleadoController::class, 'index']);
+    Route::post('empleado', [EmpleadoController::class, 'store']);
+    Route::put('empleado/{id}', [EmpleadoController::class, 'update']);
+    Route::delete('empleado/{id}', [EmpleadoController::class, 'destroy']);
+    Route::get('empleado/clinica', [EmpleadoController::class, 'filtroClinica']);
+
+    Route::get('expediente', [ExpedienteController::class, 'index']);
+    Route::post('expediente', [ExpedienteController::class, 'store']);
 });

@@ -21,7 +21,7 @@ function Usuario() {
     name: '',
     email: '',
     password: '',
-    estado: 'Activado',
+    estado: 'Activo',
     rol_id: 0,
   })
 

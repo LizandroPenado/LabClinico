@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rol;
+use App\Models\Expediente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class RolController extends Controller
+class ExpedienteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class RolController extends Controller
      */
     public function index()
     {
-        $rol = Rol::all();
-        return $rol;
+        $expediente = Expediente::all();
+        return $expediente;
     }
 
     /**
@@ -38,16 +38,18 @@ class RolController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nombre_rol' => 'required|max:25',
-            'codigo_rol' => 'required|max:3',
+            'fecha_creacion' => 'required',
+            'id_clinica' => 'required',
+            'id_paciente' => 'required',
         ], [
-            'nombre_rol.required' => 'El nopmbre es requerido.',
-            'codigo_rol.required' => 'El codigo es requerido.',
+            'fecha_creacion.required' => 'La fecha es requerida.',
+            'id_clinica.required' => 'La clinica es requerido.',
+            'id_paciente.required' => 'El paciente es requerido.',
         ]);
 
         DB::insert(
-            'insert into rols (codigo_rol, nombre_rol) values (?, ?)',
-            [ $validatedData['codigo_rol'], $validatedData['nombre_rol']]
+            'insert into expedientes (fecha_creacion_exp, clinica_id, paciente_id) values (?, ?, ?)',
+            [ $validatedData['fecha_creacion'], $validatedData['id_clinica'], $validatedData['id_paciente']]
         );
     }
 
@@ -80,21 +82,9 @@ class RolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'nombre_rol' => 'required|max:25',
-            'codigo_rol' => 'required|max:3',
-        ], [
-            'nombre_rol.required' => 'El nopmbre es requerido.',
-            'codigo_rol.required' => 'El codigo es requerido.',
-        ]);
-
         
-        $act_rol = DB::table('rols')
-              ->where('id_rol', $request->id_rol)
-              ->update(['nombre_rol' => $validatedData['nombre_rol'], 'codigo_rol' => $validatedData['codigo_rol']]);
-        return $act_rol;
     }
 
     /**
@@ -105,8 +95,6 @@ class RolController extends Controller
      */
     public function destroy($id)
     {
-        $rol= new Rol();
-        $rol = DB::table('rols')->where('id_rol', $id)->delete();
-        return $rol;
+        //
     }
 }
