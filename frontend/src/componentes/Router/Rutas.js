@@ -33,7 +33,7 @@ function Rutas() {
                                 <Route path="/usuario" element={<Usuario />} />
                                 <Route path="/rol" element={<Rol />} />
                                 <Route path="/menu" element={<GestionMenu />} />
-                                <Route path="/privilegios" element={<Privilegios />} />
+                                <Route path="/privilegio" element={<Privilegios />} />
                             </>
                         )
                     case "SEC":

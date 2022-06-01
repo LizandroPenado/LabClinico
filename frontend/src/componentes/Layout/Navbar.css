@@ -26,7 +26,7 @@
 }
 
 .lista-opciones{
-  padding-top: 40px;
+  padding-top: 40px !important;
 }
   
 .opciones{
@@ -35,7 +35,7 @@
   letter-spacing: 2px;
   color:rgb(59, 40, 129);
   font-weight: bold;
-  padding: 30px 50px;
+  padding: 30px 30px;
   position: relative;
   overflow: hidden;
   transition: color 1s;
@@ -70,4 +70,9 @@
 .info{
   color:darkblue;
   font-weight: bold;
+}
+
+.active{
+  color: red;
+  text-decoration: underline;
 }

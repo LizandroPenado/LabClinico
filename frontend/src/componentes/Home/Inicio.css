@@ -1,6 +1,6 @@
 .informacion-inicio{
     text-align: center;
-    min-height: 88.5vh;
+    min-height: 70.5vh;
     display: flex;
 	align-items: center;
 	justify-content: center;
@@ -19,7 +19,7 @@
     font-family:'Times New Roman' !important;
 }
 
-.contenedor-inicio {
+/* .contenedor-inicio {
     background: linear-gradient(
         to right, rgb(226, 219, 219),
         rgb(178, 223, 219), rgb(143, 204, 228)  );
@@ -37,7 +37,7 @@
     100%{
         background-position: 0 50%;
     }
-}
+} */
 .mensaje-bienvenida{
     color:rgb(0, 0, 0);
     font-family: Georgia, 'Times New Roman', Times, serif !important;
