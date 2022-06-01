@@ -2,28 +2,27 @@ import React, { useState, useEffect } from 'react';
 import ButtonTable from '../Datatable/ButtonTable';
 import AddIcon from '@mui/icons-material/Add';
 import DataTable from '../Datatable/DataTable';
-import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import ModalCrud from '../Modal/ModalCrud';
 import Swal from 'sweetalert2';
 import AuthUser from '../Login/AuthUser';
 
-export default function GestionMenu() {
+export default function TipoMuestra() {
     const { http } = AuthUser();
     const [modalInsert, setModalInsert] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [tipoModal, setTipoModal] = useState("");
-    const [menus, setMenus] = useState([]);
-    const [roles, setRoles] = useState([]);
-    const [menu, setMenu] = useState({
-        titulo: '',
-        url: '',
-        rol_id: 0,
+    const [tipos, setTipos] = useState([]);
+    const [tipoMuestra, setTipoMuestra] = useState({
+        codigo_tipo_muestra: '',
+        nombre_tipo_mues: '',
+        descripcion_tipo_mues: '',
     })
 
     const columns = [
         {
-            name: "id_menu",
+            name: "id_tipomuestra",
             label: "Id",
             options: {
                 display: false,
@@ -33,32 +32,25 @@ export default function GestionMenu() {
             },
         },
         {
-            name: "titulo",
-            label: "Titulo",
+            name: "codigo_tipo_muestra",
+            label: "Codigo",
             options: {
                 filter: false,
             }
         },
         {
-            name: "url",
-            label: "Url",
+            name: "nombre_tipo_mues",
+            label: "Nombre",
+            options: {
+                filter: false,
+            }
+        },
+        {
+            name: "descripcion_tipo_mues",
+            label: "Descripción",
             options: {
                 filter: false,
             },
-        },
-        {
-            name: "id_rol",
-            label: "Id",
-            options: {
-                display: false,
-                filter: false,
-                sort: false,
-                viewColumns: false,
-            },
-        },
-        {
-            name: "nombre_rol",
-            label: "Rol",
         },
         {
             name: "acciones",
@@ -80,23 +72,13 @@ export default function GestionMenu() {
     ];
 
     useEffect(() => {
-        getMenu();
-        getRoles();
+        getTipo();
     }, [])
 
-    const getMenu = () => {
-        http.get("http://127.0.0.1:8000/api/menu/rol")
+    const getTipo = () => {
+        http.get("http://127.0.0.1:8000/api/tipomuestra")
             .then((response) => {
-                setMenus(response.data);
-            }).catch((error) => {
-                console.log(error);
-            });
-    }
-
-    const getRoles = () => {
-        http.get("http://127.0.0.1:8000/api/rol/")
-            .then((response) => {
-                setRoles(response.data);
+                setTipos(response.data);
             }).catch((error) => {
                 console.log(error);
             });
@@ -106,21 +88,21 @@ export default function GestionMenu() {
     const closeDelete = () => { setModalDelete(false); clearData(); }
     const closeUpdate = () => { setModalUpdate(false); clearData(); }
     const showInsert = () => { setModalInsert(true); setTipoModal("Insertar"); }
-    const showUpdate = (menu) => {
-        setMenu({
-            id_menu: menu[0],
-            titulo: menu[1],
-            url: menu[2],
-            rol_id: menu[3],
+    const showUpdate = (tipo) => {
+        setTipoMuestra({
+            id_tipomuestra: tipo[0],
+            codigo_tipo_muestra: tipo[1],
+            nombre_tipo_mues: tipo[2],
+            descripcion_tipo_mues: tipo[3],
         })
         setModalUpdate(true);
         setTipoModal("Actualizar");
     }
 
-    const showDelete = (menu) => {
-        setMenu({
-            id_menu: menu[0],
-            titulo: menu[1],
+    const showDelete = (tipo) => {
+        setTipoMuestra({
+            id_tipomuestra: tipo[0],
+            nombre_tipo_mues: tipo[2],
         })
         setModalDelete(true);
         setTipoModal("");
@@ -128,12 +110,12 @@ export default function GestionMenu() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setMenu({ ...menu, [name]: value })
+        setTipoMuestra({ ...tipoMuestra, [name]: value })
     }
 
     const handlePost = (e) => {
         e.preventDefault();
-        if (menu.titulo === "" || menu.url === "") {
+        if (tipoMuestra.codigo_tipo_muestra === "" || tipoMuestra.nombre_tipo_mues === "" || tipoMuestra.descripcion_tipo_mues === "") {
             Swal.fire({
                 icon: 'error',
                 title: 'Datos invalidos',
@@ -141,22 +123,14 @@ export default function GestionMenu() {
             });
             return;
         }
-        if (menu.url.charAt(0) !== "/") {
-            Swal.fire({
-                icon: 'error',
-                title: 'Datos invalidos',
-                html: 'La url debe iniciar con /'
-            });
-            return;
-        }
-        http.post("http://127.0.0.1:8000/api/menu", menu)
+        http.post("http://127.0.0.1:8000/api/tipomuestra", tipoMuestra)
             .then((response) => {
                 Toast.fire({
                     icon: 'success',
                     title: 'Se ha realizado el registro'
                 })
                 closeInsert();
-                getMenu();
+                getTipo();
             }).catch((error) => {
                 Swal.fire({
                     icon: 'error',
@@ -168,7 +142,7 @@ export default function GestionMenu() {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        if (menu.titulo === "" || menu.url === "") {
+        if (tipoMuestra.codigo_tipo_muestra === "" || tipoMuestra.nombre_tipo_mues === "" || tipoMuestra.descripcion_tipo_mues === "") {
             Swal.fire({
                 icon: 'error',
                 title: 'Datos invalidos',
@@ -176,22 +150,14 @@ export default function GestionMenu() {
             });
             return;
         }
-        if (menu.url.charAt(0) !== "/") {
-            Swal.fire({
-                icon: 'error',
-                title: 'Datos invalidos',
-                html: 'La url debe iniciar con /'
-            });
-            return;
-        }
-        http.put("http://127.0.0.1:8000/api/menu/" + menu.id_menu, menu)
+        http.put("http://127.0.0.1:8000/api/tipomuestra/" + tipoMuestra.id_tipomuestra, tipoMuestra)
             .then((response) => {
                 Toast.fire({
                     icon: 'info',
-                    title: 'Se ha actualizado el usuario: ' + menu.titulo
+                    title: 'Se ha actualizado el tipo muestra: ' + tipoMuestra.nombre_tipo_mues
                 })
                 closeUpdate();
-                getMenu();
+                getTipo();
             }).catch((error) => {
                 Swal.fire({
                     icon: 'error',
@@ -203,17 +169,17 @@ export default function GestionMenu() {
 
     const handleDelete = (e) => {
         e.preventDefault();
-        http.delete("http://127.0.0.1:8000/api/menu/" + menu.id_menu)
-            .then((response) => {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Se ha eliminado el usuario: ' + menu.titulo
-                })
-                closeDelete();
-                getMenu();
-            }).catch((error) => {
-                console.log(error);
-            });
+        http.delete("http://127.0.0.1:8000/api/tipomuestra/" + tipoMuestra.id_tipomuestra)
+             .then((response) => {
+                 Toast.fire({
+                     icon: 'error',
+                     title: 'Se ha eliminado el tipo muestra: ' + tipoMuestra.nombre_tipo_mues
+                 })
+                 closeDelete();
+                 getTipo();
+             }).catch((error) => {
+                 console.log(error);
+             });
     }
 
     const Toast = Swal.mixin({
@@ -229,15 +195,15 @@ export default function GestionMenu() {
     })
 
     const clearData = () => {
-        setMenu({
-            id_menu: '',
-            titulo: '',
-            url: '',
-            rol_id: 0,
+        setTipoMuestra({
+            id_tipomuestra: '',
+            codigo_tipo_muestra: '',
+            nombre_tipo_mues: '',
+            descripcion_tipo_mues: '',
         })
     }
 
-    const { titulo, url, rol_id } = menu;
+    const { codigo_tipo_muestra, nombre_tipo_mues, descripcion_tipo_mues } = tipoMuestra;
 
     return (
         <>
@@ -254,72 +220,59 @@ export default function GestionMenu() {
                             <span className="pl-8">Agregar</span>
                         </Button>
                     }
-                    titulo="Menu"
-                    noRegistro="No hay registro de menu"
+                    titulo="Tipo de muestras"
+                    noRegistro="No hay registro de tipo de muestras"
                     columnas={columns}
-                    datos={menus}
+                    datos={tipos}
                 />
                 {/* Modales */}
                 <ModalCrud
                     abrirInsertar={modalInsert}
                     cerrarInsertar={closeInsert}
-                    titulo="menu"
+                    titulo="Tipo muestra"
                     formulario={
                         <Form validated={true}>
                             <Form.Group>
-                                <Form.Label>Titulo*</Form.Label>
+                                <Form.Label>Código*</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    id="titulo"
-                                    name="titulo"
-                                    placeholder="Usuarios"
-                                    maxLength={20}
+                                    id="codigo_tipo_muestra"
+                                    name="codigo_tipo_muestra"
+                                    placeholder="TMORI"
+                                    maxLength={5}
                                     autoComplete="nope"
                                     required={true}
-                                    value={titulo}
+                                    value={codigo_tipo_muestra}
                                     onChange={handleChange}
                                 />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Url*</Form.Label>
-                                <OverlayTrigger
-                                    overlay={
-                                        <Tooltip>
-                                            Debe iniciar con /
-                                        </Tooltip>
-                                    }
-                                >
-                                    <Form.Control
-                                        type="text"
-                                        id="url"
-                                        name="url"
-                                        placeholder="/usuario"
-                                        pattern="([/])([A-z]+)"
-                                        maxLength={50}
-                                        required={true}
-                                        value={url}
-                                        onChange={handleChange}
-                                    />
-                                </OverlayTrigger>
+                                <Form.Label>Nombre*</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    id="nombre_tipo_mues"
+                                    name="nombre_tipo_mues"
+                                    placeholder="Muestra de orina"
+                                    autoComplete="nope"
+                                    maxLength={25}
+                                    required={true}
+                                    value={nombre_tipo_mues}
+                                    onChange={handleChange}
+                                />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Rol*</Form.Label>
-                                <Form.Select
-                                    id="rol_id"
-                                    name="rol_id"
+                                <Form.Label>Descripción*</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    id="descripcion_tipo_mues"
+                                    name="descripcion_tipo_mues"
+                                    placeholder="Muestra que se utiliza ..."
+                                    autoComplete="nope"
+                                    maxLength={250}
                                     required={true}
-                                    value={rol_id}
+                                    value={descripcion_tipo_mues}
                                     onChange={handleChange}
-                                >
-                                    <option value=''>
-                                        Seleccione..
-                                    </option>
-                                    {roles.map((elemento) => (
-                                        <option key={elemento.id_rol} value={elemento.id_rol}>
-                                            {elemento.nombre_rol}
-                                        </option>
-                                    ))}
-                                </Form.Select>
+                                />
                             </Form.Group>
                             <div className="obligatorio">
                                 <span>Datos requeridos (*)</span>
@@ -350,7 +303,7 @@ export default function GestionMenu() {
                     }
                     abrirEliminar={modalDelete}
                     cerrarEliminar={closeDelete}
-                    registro={titulo}
+                    registro={nombre_tipo_mues}
                     pieModalEliminar={
                         <>
                             <Button variant="danger" onClick={handleDelete}>

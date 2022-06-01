@@ -9,6 +9,8 @@ import GestionMenu from '../Menu/GestionMenu';
 import AuthUser from '../Login/AuthUser';
 import ConsultarExamen from '../Examenes/ConsultarExamen';
 import Privilegios from '../Privilegios/Privilegios';
+import TipoMuestra from '../GestionTipos/TipoMuestra';
+import TipoExamen from '../GestionTipos/TipoExamen';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -19,9 +21,9 @@ function Rutas() {
     }, [])
     return (
         <Routes>
-            { !token ? (
-                 <Route path="/" element={<InicioSesion />} />
-            ):(
+            {!token ? (
+                <Route path="/" element={<InicioSesion />} />
+            ) : (
                 <></>
             )}
             <Route path="/inicio" element={<Inicio />} />
@@ -45,7 +47,9 @@ function Rutas() {
                     case "LAB":
                         return (
                             <>
-                            <Route path="/orden" element={<ConsultarExamen />} />
+                                <Route path="/orden" element={<ConsultarExamen />} />
+                                <Route path="/tipoMuestra" element={<TipoMuestra />} />
+                                <Route path="/tipoExamen" element={<TipoExamen />} />
                             </>
                         )
                     case "JLA":
