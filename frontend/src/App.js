@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className='pt-5'>
         <Rutas />
         <footer className='fixed-bottom pie'>
           <Typography variant='body2' color='textSecondary' align='center'>
