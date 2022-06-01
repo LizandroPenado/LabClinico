@@ -11,6 +11,8 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\TelefonoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrivilegiosController;
+use App\Http\Controllers\TipoExamenController;
+use App\Http\Controllers\TipoMuestraController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -79,4 +81,14 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('privilegios', [PrivilegiosController::class, 'store']);
     Route::put('privilegios/{id}', [PrivilegiosController::class, 'update']);
     Route::delete('privilegios/{id}', [PrivilegiosController::class, 'destroy']);
+
+    Route::get('tipomuestra', [TipoMuestraController::class, 'index']);
+    Route::post('tipomuestra', [TipoMuestraController::class, 'store']);
+    Route::put('tipomuestra/{id}', [TipoMuestraController::class, 'update']);
+    Route::delete('tipomuestra/{id}', [TipoMuestraController::class, 'destroy']);
+
+    Route::get('tipoexamen', [TipoExamenController::class, 'index']);
+    Route::post('tipoexamen', [TipoExamenController::class, 'store']);
+    Route::put('tipoexamen/{id}', [TipoExamenController::class, 'update']);
+    Route::delete('tipoexamen/{id}', [TipoExamenController::class, 'destroy']);
 });
