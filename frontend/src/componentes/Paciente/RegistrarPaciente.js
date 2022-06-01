@@ -43,10 +43,32 @@ export default function RegistrarPaciente() {
         anio_res: '',
         telefono_res: '',
     })
+    const [expediente, setExpediente] = useState({
+        /* fecha_creacion: '',
+        id_clinica: '', */
+        id_paciente: '',
+    });
 
     useEffect(() => {
         getDepartament();
+        getClinica();
+        /* var hoy = new Date();
+        setExpediente({fecha_creacion: hoy.toLocaleDateString()}); */
     }, []);
+
+    const getClinica = async () => {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        await http.get("http://127.0.0.1:8000/api/empleado/clinica", {
+            params: {
+                id: user.id,
+            },
+        })
+            .then((response) => {
+                setExpediente({ id_clinica: response.data[0].id_clinica});
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
 
     const getDepartament = () => {
         http.get("http://127.0.0.1:8000/api/departamento/")
@@ -146,6 +168,7 @@ export default function RegistrarPaciente() {
             )
             .then((response) => {
                 registroTelefonos(response.data);
+                registroExpediente(response.data);
             }).catch((error) => {
                 console.log(error);
             });
@@ -171,6 +194,26 @@ export default function RegistrarPaciente() {
                 telefono2: tel2,
                 telefono3: tel3,
                 paciente_id: id_pac.id_paciente
+            })
+            .then((response) => {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se ha realizado el registro'
+                })
+                handleReset();
+                setValidated(false);
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    const registroExpediente = async (id_pac) => {
+        var hoy = new Date();
+        await http
+            .post("http://127.0.0.1:8000/api/expediente/", {
+                fecha_creacion: hoy.toLocaleDateString(),
+                id_paciente: id_pac.id_paciente,
+                id_clinica: expediente.id_clinica,
             })
             .then((response) => {
                 Toast.fire({
@@ -528,7 +571,7 @@ export default function RegistrarPaciente() {
                                 <Row className="mb-3">
 
                                     <Form.Group as={Col} md="6">
-                                        <Form.Label>Correo*</Form.Label>
+                                        <Form.Label>Correo</Form.Label>
                                         <OverlayTrigger
                                             overlay={
                                                 <Tooltip>
@@ -541,7 +584,6 @@ export default function RegistrarPaciente() {
                                                 name='correo'
                                                 value={correo}
                                                 onChange={handleChangePaciente}
-                                                required
                                                 maxLength={50}
                                                 pattern="([A-z]+)@([A-z]+)[.]([A-z.]+)"
                                                 type="email"
@@ -775,7 +817,7 @@ export default function RegistrarPaciente() {
                                 </Row>
                                 <Row className="mb-3">
                                     <Form.Group as={Col} md="6">
-                                        <Form.Label>Correo*</Form.Label>
+                                        <Form.Label>Correo</Form.Label>
                                         <OverlayTrigger
                                             overlay={
                                                 <Tooltip>
@@ -788,7 +830,6 @@ export default function RegistrarPaciente() {
                                                 name='correo_res'
                                                 value={correo_res}
                                                 onChange={handleChangeResponsable}
-                                                required
                                                 maxLength={50}
                                                 pattern="([A-z]+)@([A-z]+)[.]([A-z.]+)"
                                                 type="email"

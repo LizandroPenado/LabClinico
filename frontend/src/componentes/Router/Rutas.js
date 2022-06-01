@@ -11,6 +11,10 @@ import ConsultarExamen from '../Examenes/ConsultarExamen';
 import Privilegios from '../Privilegios/Privilegios';
 import TipoMuestra from '../GestionTipos/TipoMuestra';
 import TipoExamen from '../GestionTipos/TipoExamen';
+import GestionClinica from '../Clinica/GestionClinica';
+import GestionEmpleado from '../Empleado/GestionEmpleado';
+import AgregarEmpleado from '../Empleado/AgregarEmpleado';
+import ConsultarEmpleado from '../Empleado/ConsultarEmpleado';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -33,9 +37,9 @@ function Rutas() {
                         return (
                             <>
                                 <Route path="/usuario" element={<Usuario />} />
-                                <Route path="/rol" element={<Rol />} />
-                                <Route path="/menu" element={<GestionMenu />} />
-                                <Route path="/privilegio" element={<Privilegios />} />
+                                <Route path="/empleado" element={<GestionEmpleado />} />
+                                <Route path="/empleado/agregar" element={<AgregarEmpleado />} />
+                                <Route path="/empleado/consultar" element={<ConsultarEmpleado />} />
                             </>
                         )
                     case "SEC":
@@ -55,6 +59,15 @@ function Rutas() {
                     case "JLA":
                         return (
                             <>
+                            </>
+                        )
+                    case "ADG":
+                        return (
+                            <>
+                                <Route path="/rol" element={<Rol />} />
+                                <Route path="/menu" element={<GestionMenu />} />
+                                <Route path="/privilegio" element={<Privilegios />} />
+                                <Route path="/clinica" element={<GestionClinica />} />
                             </>
                         )
                     default:
