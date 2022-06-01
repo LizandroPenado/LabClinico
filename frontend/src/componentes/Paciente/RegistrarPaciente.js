@@ -234,7 +234,7 @@ export default function RegistrarPaciente() {
     return (
         <>
             {/* <Navbar /> */}
-            <div className='pt-3 container'>
+            <div className='pt-5 container'>
                 <Form validated={validated} id="registro" noValidate onSubmit={handlePost}>
                     <Accordion defaultActiveKey="0" >
                         <Accordion.Item eventKey="0">
