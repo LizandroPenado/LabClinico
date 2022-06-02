@@ -113,7 +113,7 @@ export default function TipoMuestra() {
         setTipoMuestra({ ...tipoMuestra, [name]: value })
     }
 
-    const handlePost = (e) => {
+    const handlePost = async (e) => {
         e.preventDefault();
         if (tipoMuestra.codigo_tipo_muestra === "" || tipoMuestra.nombre_tipo_mues === "" || tipoMuestra.descripcion_tipo_mues === "") {
             Swal.fire({
@@ -123,7 +123,7 @@ export default function TipoMuestra() {
             });
             return;
         }
-        http.post("http://127.0.0.1:8000/api/tipomuestra", tipoMuestra)
+        await http.post("http://127.0.0.1:8000/api/tipomuestra", tipoMuestra)
             .then((response) => {
                 Toast.fire({
                     icon: 'success',
@@ -140,7 +140,7 @@ export default function TipoMuestra() {
             });
     }
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         if (tipoMuestra.codigo_tipo_muestra === "" || tipoMuestra.nombre_tipo_mues === "" || tipoMuestra.descripcion_tipo_mues === "") {
             Swal.fire({
@@ -150,7 +150,7 @@ export default function TipoMuestra() {
             });
             return;
         }
-        http.put("http://127.0.0.1:8000/api/tipomuestra/" + tipoMuestra.id_tipomuestra, tipoMuestra)
+        await http.put("http://127.0.0.1:8000/api/tipomuestra/" + tipoMuestra.id_tipomuestra, tipoMuestra)
             .then((response) => {
                 Toast.fire({
                     icon: 'info',
@@ -167,9 +167,9 @@ export default function TipoMuestra() {
             });
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault();
-        http.delete("http://127.0.0.1:8000/api/tipomuestra/" + tipoMuestra.id_tipomuestra)
+        await http.delete("http://127.0.0.1:8000/api/tipomuestra/" + tipoMuestra.id_tipomuestra)
              .then((response) => {
                  Toast.fire({
                      icon: 'error',

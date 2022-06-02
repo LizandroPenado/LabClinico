@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Col, Row, Button, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Form, Col, Row, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import AuthUser from '../Login/AuthUser';
 import { Link } from "react-router-dom";
-/* import Navbar from '../Layout/Navbar'; */
 
 export default function AgregarEmpleado() {
     const { http } = AuthUser();
@@ -149,7 +148,6 @@ export default function AgregarEmpleado() {
 
     return (
         <>
-            {/* <Navbar /> */}
             <div className='pt-5'></div>
             <div className='container form'>
                 <Form validated={validated} id="registro" noValidate onSubmit={handlePost} >

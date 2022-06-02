@@ -139,7 +139,7 @@ export default function TipoExamen() {
         setTipoExamen({ ...tipoExamen, [name]: value })
     }
 
-    const handlePost = (e) => {
+    const handlePost = async (e) => {
         e.preventDefault();
         if (tipoExamen.codigo_tipo_examen === "" || tipoExamen.nombre_tipo_exam === "" || tipoExamen.descripcion_tipo_exam === "" || tipoExamen.id_tipomuestra === "") {
             Swal.fire({
@@ -149,7 +149,7 @@ export default function TipoExamen() {
             });
             return;
         }
-        http.post("http://127.0.0.1:8000/api/tipoexamen", tipoExamen)
+        await http.post("http://127.0.0.1:8000/api/tipoexamen", tipoExamen)
             .then((response) => {
                 Toast.fire({
                     icon: 'success',
@@ -166,7 +166,7 @@ export default function TipoExamen() {
             });
     }
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         if (tipoExamen.codigo_tipo_examen === "" || tipoExamen.nombre_tipo_exam === "" || tipoExamen.descripcion_tipo_exam === "" || tipoExamen.id_tipomuestra === "") {
             Swal.fire({
@@ -176,7 +176,7 @@ export default function TipoExamen() {
             });
             return;
         }
-        http.put("http://127.0.0.1:8000/api/tipoexamen/" + tipoExamen.id_tipoexamen, tipoExamen)
+        await http.put("http://127.0.0.1:8000/api/tipoexamen/" + tipoExamen.id_tipoexamen, tipoExamen)
             .then((response) => {
                 Toast.fire({
                     icon: 'info',
@@ -193,9 +193,9 @@ export default function TipoExamen() {
             });
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault();
-        http.delete("http://127.0.0.1:8000/api/tipoexamen/" + tipoExamen.id_tipoexamen)
+        await http.delete("http://127.0.0.1:8000/api/tipoexamen/" + tipoExamen.id_tipoexamen)
              .then((response) => {
                  Toast.fire({
                      icon: 'error',
@@ -234,7 +234,6 @@ export default function TipoExamen() {
 
     return (
         <>
-            {/* <Navbar/> */}
             <div className='pt-3 container'>
                 <DataTable
                     agregar={

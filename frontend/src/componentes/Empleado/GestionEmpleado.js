@@ -132,9 +132,9 @@ export default function GestionEmpleado() {
     }
 
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault();
-        http
+        await http
           .delete("http://127.0.0.1:8000/api/empleado/" + empleado.id_empleado)
           .then((response) => {
             Toast.fire({

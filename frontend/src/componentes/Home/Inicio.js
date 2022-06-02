@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import './Inicio.css'
 import { Typography } from '@mui/material';
-/* import Navbar from '../Layout/Navbar'; */
 import AuthUser from '../Login/AuthUser';
 
 function Inicio() {
@@ -20,13 +19,8 @@ function Inicio() {
     }
     return (
         <>
-            {/* <Navbar/> */}
             <Container fluid className='pt-5 contenedor-inicio'>
                 <Row className='informacion-inicio'>
-                    {/*  <Col sm={4}>
-                        <Typography variant='h3' className='mensaje-bienvenida'>Bienvenid@ </Typography>
-                        <Typography variant='h4' className='mensaje-bienvenida text-danger'>{ userdetail.name }</Typography>
-                    </Col> */}
                     <Col sm={8}>
                         <div className='pb-5'>
                             <Typography variant='h3' className='mensaje-bienvenida'>Bienvenid@ </Typography>

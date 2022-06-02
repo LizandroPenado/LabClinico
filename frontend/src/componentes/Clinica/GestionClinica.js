@@ -158,7 +158,7 @@ export default function GestionClinica() {
         setClinica({ ...clinica, [name]: value })
     }
 
-    const handlePost = (e) => {
+    const handlePost = async (e) => {
         e.preventDefault();
         if (clinica.nombre_clinica === "" || clinica.codigo_clinica === "" || clinica.direccion_clinica === "" || clinica.id_municipio === 0) {
             Swal.fire({
@@ -168,7 +168,7 @@ export default function GestionClinica() {
             });
             return;
         }
-        http.post("http://127.0.0.1:8000/api/clinica", clinica)
+        await http.post("http://127.0.0.1:8000/api/clinica", clinica)
             .then((response) => {
                 Toast.fire({
                     icon: 'success',
@@ -185,7 +185,7 @@ export default function GestionClinica() {
             });
     }
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         if (clinica.nombre_clinica === "" || clinica.codigo_clinica === "" || clinica.direccion_clinica === "" || clinica.id_municipio === "") {
             Swal.fire({
@@ -195,7 +195,7 @@ export default function GestionClinica() {
             });
             return;
         }
-        http.put("http://127.0.0.1:8000/api/clinica/" + clinica.id_clinica, clinica)
+        await http.put("http://127.0.0.1:8000/api/clinica/" + clinica.id_clinica, clinica)
             .then((response) => {
                 Toast.fire({
                     icon: 'info',
@@ -212,9 +212,9 @@ export default function GestionClinica() {
             });
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault();
-        http.delete("http://127.0.0.1:8000/api/clinica/" + clinica.id_clinica)
+        await http.delete("http://127.0.0.1:8000/api/clinica/" + clinica.id_clinica)
             .then((response) => {
                 Toast.fire({
                     icon: 'error',
@@ -285,7 +285,6 @@ export default function GestionClinica() {
 
     return (
         <>
-            {/* <Navbar/> */}
             <div className='pt-3 container'>
                 <DataTable
                     agregar={

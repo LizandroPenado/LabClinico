@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empleado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -118,7 +119,9 @@ class EmpleadoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $empleado = new Empleado();
+        $empleado = DB::table('empleados')->where('id_empleado', $id)->delete();
+        return $empleado;
     }
 
     public function filtroClinica(Request $request)

@@ -129,10 +129,10 @@ export default function GestionMenu() {
 
     return (
         <>
-            {/* <Navbar/> */}
-            <Container className="menu-busqueda mt-4">
-                <Row className="pt-4">
-                    <Col sm={10} className="pt-3">
+            <div className='pt-5'></div>
+            <Container className="menu-busqueda ">
+                <Row className="pt-4 pb-4">
+                    <Col sm={10} className="pt-2">
                         <Form.Group>
                             <OverlayTrigger
                                 overlay={
@@ -152,14 +152,13 @@ export default function GestionMenu() {
                             </OverlayTrigger>
                         </Form.Group>
                     </Col>
-                    <Col sm={2} className="pt-3">
+                    <Col sm={2} className="pt-2">
                         <Button variant="secondary" /* onClick={() => this.handleBusqueda()} */>
                             <SearchIcon />
                             <span className="texto-boton">Buscar</span>
                         </Button>
                     </Col>
                 </Row>
-                <Row className="pt-3 pb-3"></Row>
             </Container>
             <div className='container'>
                 <DataTable
