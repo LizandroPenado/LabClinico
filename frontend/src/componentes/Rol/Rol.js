@@ -104,7 +104,7 @@ export default function Rol() {
         setRol({ ...rol, [name]: value })
     }
 
-    const handlePost = (e) => {
+    const handlePost = async (e) => {
         e.preventDefault();
         if (rol.codigo_rol === "" || rol.nombre_rol === "") {
             Swal.fire({
@@ -114,7 +114,7 @@ export default function Rol() {
             });
             return;
         }
-        http.post("http://127.0.0.1:8000/api/rol", rol)
+        await http.post("http://127.0.0.1:8000/api/rol", rol)
             .then((response) => {
                 Toast.fire({
                     icon: 'success',
@@ -131,7 +131,7 @@ export default function Rol() {
             });
     }
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         if (rol.codigo_rol === "" || rol.nombre_rol === "") {
             Swal.fire({
@@ -141,7 +141,7 @@ export default function Rol() {
             });
             return;
         }
-        http.put("http://127.0.0.1:8000/api/rol/" + rol.id_rol, rol)
+        await http.put("http://127.0.0.1:8000/api/rol/" + rol.id_rol, rol)
             .then((response) => {
                 Toast.fire({
                     icon: 'info',
@@ -158,9 +158,9 @@ export default function Rol() {
             });
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault();
-        http.delete("http://127.0.0.1:8000/api/rol/" + rol.id_rol)
+        await http.delete("http://127.0.0.1:8000/api/rol/" + rol.id_rol)
              .then((response) => {
                  Toast.fire({
                      icon: 'error',
@@ -197,7 +197,6 @@ export default function Rol() {
 
     return (
         <>
-            {/* <Navbar/> */}
             <div className='pt-3 container'>
                 <DataTable
                     agregar={

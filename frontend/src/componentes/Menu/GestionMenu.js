@@ -131,7 +131,7 @@ export default function GestionMenu() {
         setMenu({ ...menu, [name]: value })
     }
 
-    const handlePost = (e) => {
+    const handlePost = async (e) => {
         e.preventDefault();
         if (menu.titulo === "" || menu.url === "") {
             Swal.fire({
@@ -149,7 +149,7 @@ export default function GestionMenu() {
             });
             return;
         }
-        http.post("http://127.0.0.1:8000/api/menu", menu)
+        await http.post("http://127.0.0.1:8000/api/menu", menu)
             .then((response) => {
                 Toast.fire({
                     icon: 'success',
@@ -166,7 +166,7 @@ export default function GestionMenu() {
             });
     }
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         if (menu.titulo === "" || menu.url === "") {
             Swal.fire({
@@ -184,7 +184,7 @@ export default function GestionMenu() {
             });
             return;
         }
-        http.put("http://127.0.0.1:8000/api/menu/" + menu.id_menu, menu)
+        await http.put("http://127.0.0.1:8000/api/menu/" + menu.id_menu, menu)
             .then((response) => {
                 Toast.fire({
                     icon: 'info',
@@ -201,9 +201,9 @@ export default function GestionMenu() {
             });
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault();
-        http.delete("http://127.0.0.1:8000/api/menu/" + menu.id_menu)
+        await http.delete("http://127.0.0.1:8000/api/menu/" + menu.id_menu)
             .then((response) => {
                 Toast.fire({
                     icon: 'error',
@@ -241,7 +241,6 @@ export default function GestionMenu() {
 
     return (
         <>
-            {/* <Navbar/> */}
             <div className='pt-3 container'>
                 <DataTable
                     agregar={

@@ -6,7 +6,6 @@ import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ModalCrud from '../Modal/ModalCrud';
 import Swal from 'sweetalert2';
 import AuthUser from '../Login/AuthUser';
-/* import Navbar from '../Layout/Navbar'; */
 
 function Usuario() {
   const { http } = AuthUser();
@@ -141,9 +140,9 @@ function Usuario() {
     setUser({ ...user, [name]: value })
   }
 
-  const handlePost = (e) => {
+  const handlePost = async (e) => {
     e.preventDefault();
-    http
+    await http
       .post("http://127.0.0.1:8000/api/user/register", user)
       .then((response) => {
         Toast.fire({
@@ -161,9 +160,9 @@ function Usuario() {
       });
   }
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    http
+    await http
       .put("http://127.0.0.1:8000/api/user/" + user.id, user)
       .then((response) => {
         Toast.fire({
@@ -177,9 +176,9 @@ function Usuario() {
       });
   }
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
-    http
+    await http
       .delete("http://127.0.0.1:8000/api/user/" + user.id)
       .then((response) => {
         Toast.fire({
@@ -220,7 +219,6 @@ function Usuario() {
 
   return (
     <>
-      {/* <Navbar/> */}
       <div className='pt-3 container'>
         <DataTable
           agregar={
