@@ -16,6 +16,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrivilegiosController;
 use App\Http\Controllers\TipoExamenController;
 use App\Http\Controllers\TipoMuestraController;
+use App\Http\Controllers\reporteUrianalisisController;
+use App\Http\Controllers\reporteQuimicaClinicaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -108,4 +110,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::get('expediente', [ExpedienteController::class, 'index']);
     Route::post('expediente', [ExpedienteController::class, 'store']);
+
+    Route::get("urianalisis", [reporteUrianalisisController::class, 'index']);
+
+    Route::get("quimicaclinica", [reporteQuimicaClinicaController::class, 'index']);
+    
 });
