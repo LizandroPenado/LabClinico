@@ -13,6 +13,7 @@ function Usuario() {
   const [modalUpdate, setModalUpdate] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [tipoModal, setTipoModal] = useState("");
+  const [clinica, setClinica] = useState("");
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [user, setUser] = useState({
@@ -68,6 +69,10 @@ function Usuario() {
       label: "Rol",
     },
     {
+      name: "nombre_clinica",
+      label: "Clinica",
+    },
+    {
       name: "acciones",
       label: "Acciónes",
       options: {
@@ -92,10 +97,16 @@ function Usuario() {
   }, [])
 
   const getUser = () => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
     http
-      .get("http://127.0.0.1:8000/api/user/")
+      .get("http://127.0.0.1:8000/api/user/clinica", {
+        params: {
+          id: user.id,
+        }
+      })
       .then((response) => {
         setUsers(response.data);
+        setClinica(response.data[0].nombre_clinica);
       }).catch((error) => {
         console.log(error);
       });
@@ -231,7 +242,7 @@ function Usuario() {
               <span className="pl-8">Agregar</span>
             </Button>
           }
-          titulo="Usuarios"
+          titulo={"Gestionar usuarios de " + clinica}
           noRegistro="No hay registro de usuarios"
           columnas={columns}
           datos={users}

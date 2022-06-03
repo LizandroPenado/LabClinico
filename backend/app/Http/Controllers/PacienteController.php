@@ -13,9 +13,29 @@ class PacienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = $request->get('id');
+        $id_clinica = 0;
+
+        $empleado = DB::table('empleados')->get();
+
+        foreach ($empleado as $emp) {
+            if ($emp->usuario_id == $user) {
+                $id_clinica = $emp->clinica_id;
+            }
+        }
+
+        $expediente = DB::table('expedientes')
+            ->join('pacientes', 'pacientes.id_paciente', '=', 'expedientes.paciente_id')
+            ->join('clinicas', 'clinicas.id_clinica', '=', 'expedientes.clinica_id')
+            ->join('municipios', 'municipios.id_municipio', '=', 'pacientes.municipio_id')
+            ->join('departamentos', 'departamentos.id_departamento', '=', 'municipios.departamento_id')
+            ->select('pacientes.id_paciente', 'pacientes.nombre_paciente', 'pacientes.apellido_paciente', 'pacientes.correo_paciente', 'pacientes.direccion_paciente', 'municipios.id_municipio', 'municipios.nombre_mun', 'departamentos.id_departamento', 'departamentos.nombre_dep')
+            ->where('clinicas.id_clinica', '=', $id_clinica)
+            ->get();
+
+        return $expediente;
     }
 
     /**
@@ -41,7 +61,7 @@ class PacienteController extends Controller
             'establecimiento_id' => 'required',
         ]); */
 
-        $fecha = date($request->get('anio') . "/". $request->get('mes') . "/" . $request->get('dia'));
+        $fecha = date($request->get('anio') . "/" . $request->get('mes') . "/" . $request->get('dia'));
 
         $paciente = new Paciente();
         $paciente->nombre_paciente = $request->get('nombre');
@@ -103,7 +123,19 @@ class PacienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $paciente = new Paciente();
+        $paciente->nombre_paciente = $request->get('nombre');
+        $paciente->apellido_paciente = $request->get('apellido');
+        $paciente->direccion_paciente = $request->get('direccion');
+        $paciente->correo_paciente = $request->get('correo');
+        $paciente->municipio_id = $request->get('municipio');
+
+        $act_paciente = DB::table('pacientes')
+              ->where('id_paciente', $request->id_paciente)
+              ->update(['nombre_paciente' => $paciente->nombre_paciente, 'apellido_paciente' => $paciente->apellido_paciente, 'direccion_paciente' => $paciente->direccion_paciente,
+              'correo_paciente' => $paciente->correo_paciente, 'municipio_id' => $paciente->municipio_id ]);
+        return $act_paciente;
+
     }
 
     /**
@@ -114,6 +146,8 @@ class PacienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $paciente = new Paciente();
+        $paciente = DB::table('pacientes')->where('id_paciente', $id)->delete();
+        return $paciente;
     }
 }

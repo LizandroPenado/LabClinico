@@ -33,7 +33,7 @@ export default function TipoMuestra() {
         },
         {
             name: "codigo_tipo_muestra",
-            label: "Codigo",
+            label: "Código",
             options: {
                 filter: false,
             }

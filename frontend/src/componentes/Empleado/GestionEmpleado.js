@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import ButtonTable from '../Datatable/ButtonTable';
 import AddIcon from '@mui/icons-material/Add';
 import DataTable from '../Datatable/DataTable';
-import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import ModalCrud from '../Modal/ModalCrud';
 import Swal from 'sweetalert2';
 import AuthUser from '../Login/AuthUser';
 import { Link } from "react-router-dom";
 import './Empleado.css';
 import ButtonConsult from '../Datatable/ButtonConsult';
-/* import Navbar from '../Layout/Navbar'; */
 
 export default function GestionEmpleado() {
     const { http } = AuthUser();
     const [modalDelete, setModalDelete] = useState(false);
     const [tipoModal, setTipoModal] = useState("");
     const [empleados, setEmpleados] = useState([]);
+    const [clinica, setClinica] = useState("");
     const [empleado, setEmpleado] = useState({
         id_empleado: '',
         nombre_empleado: '',
@@ -49,9 +48,6 @@ export default function GestionEmpleado() {
         {
             name: "profesion",
             label: "Profesión",
-            options: {
-                filter: false,
-            },
         },
         {
             name: "correo_empleado",
@@ -87,6 +83,9 @@ export default function GestionEmpleado() {
         {
             name: "name",
             label: "Usuario",
+            options: {
+                filter: false,
+            },
         },
         {
             name: "acciones",
@@ -98,7 +97,7 @@ export default function GestionEmpleado() {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <ButtonConsult
-                            consultar={"/empleado/consultar/"+tableMeta.rowData[0]}
+                            consultar={"/empleado/consultar?empleado=" + tableMeta.rowData[0]}
                             eliminar={() => { showDelete(tableMeta.rowData) }}
                         />
                     );
@@ -112,10 +111,16 @@ export default function GestionEmpleado() {
     }, [])
 
     const getEmpleado = () => {
+        const user = JSON.parse(sessionStorage.getItem('user'));
         http
-            .get("http://127.0.0.1:8000/api/empleado/")
+            .get("http://127.0.0.1:8000/api/empleado", {
+                params: {
+                    id: user.id,
+                }
+            })
             .then((response) => {
                 setEmpleados(response.data);
+                setClinica(response.data[0].nombre_clinica);
             }).catch((error) => {
                 console.log(error);
             });
@@ -135,17 +140,17 @@ export default function GestionEmpleado() {
     const handleDelete = async (e) => {
         e.preventDefault();
         await http
-          .delete("http://127.0.0.1:8000/api/empleado/" + empleado.id_empleado)
-          .then((response) => {
-            Toast.fire({
-              icon: 'error',
-              title: 'Se ha eliminado el empleado: ' + empleado.nombre_empleado
-            })
-            closeDelete();
-            getEmpleado();
-          }).catch((error) => {
-            console.log(error);
-          });
+            .delete("http://127.0.0.1:8000/api/empleado/" + empleado.id_empleado)
+            .then((response) => {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Se ha eliminado el empleado: ' + empleado.nombre_empleado
+                })
+                closeDelete();
+                getEmpleado();
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
     const Toast = Swal.mixin({
@@ -161,17 +166,13 @@ export default function GestionEmpleado() {
     })
 
     const clearData = () => {
-        /* setUser({
-          id: '',
-          name: '',
-          email: '',
-          password: '',
-          estado: 'Activo',
-          rol_id: 0,
-        }) */
+        setEmpleado({
+            id_empleado: '',
+            nombre_empleado: '',
+        })
     }
 
-    const { id_empleado, nombre_empleado} = empleado;
+    const { id_empleado, nombre_empleado } = empleado;
 
     return (
         <>
@@ -185,7 +186,7 @@ export default function GestionEmpleado() {
                             <Link to={"/empleado/agregar"} className="agregar pl-8"> <AddIcon /> Agregar </Link>
                         </Button>
                     }
-                    titulo="Empleados"
+                    titulo={"Gestionar empleados de " + clinica}
                     noRegistro="No hay registro de empleados"
                     columnas={columns}
                     datos={empleados}

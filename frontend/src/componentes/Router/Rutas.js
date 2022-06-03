@@ -17,6 +17,7 @@ import AgregarEmpleado from '../Empleado/AgregarEmpleado';
 import ConsultarEmpleado from '../Empleado/ConsultarEmpleado';
 import Expediente from '../Expediente/Expediente';
 import ReferenciasUrianalisis from '../ReferenciasUrianalisis/ReferenciasUrianalisis'
+import GestionPaciente from '../Paciente/GestionPaciente';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -41,14 +42,15 @@ function Rutas() {
                                 <Route path="/usuario" element={<Usuario />} />
                                 <Route path="/empleado" element={<GestionEmpleado />} />
                                 <Route path="/empleado/agregar" element={<AgregarEmpleado />} />
-                                <Route path="/empleado/consultar" element={<ConsultarEmpleado />} />
+                                <Route path="/empleado/consultar/" element={<ConsultarEmpleado />} />
                             </>
                         )
                     case "SEC":
                         return (
                             <>
                                 <Route path="/registrar" element={<RegistrarPaciente />} />
-                                <Route path="/expediente" element={<Expediente />} />
+                                <Route path="/paciente" element={<Expediente />} />
+                                <Route path="/gestionPac" element={<GestionPaciente />} />
                             </>
                         )
                     case "LAB":
