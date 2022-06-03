@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('privilegios', function (Blueprint $table) {
             $table->id('id_privilegio');
-            $table->string('nombre', 25);
-            $table->string('descripcion', 30);
+            $table->string('nombre', 35);
+            $table->string('descripcion', 50);
+            $table->string('codigo_privilegio', 5);
             $table->unsignedBigInteger('rol_id');
             $table->foreign('rol_id')->references('id_rol')->on('rols')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

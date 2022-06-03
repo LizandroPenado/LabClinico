@@ -1,21 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\DatoDemografico;
+use App\Models\OrdenExamenes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class DatoDemograficoController extends Controller
+class OrdenExamenesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $orden = DB::table('orden_examenes')
+            ->join('tipo_examens', 'tipo_examens.id_tipoexamen', '=', 'orden_examenes.tipoexamen_id')
+            ->select('orden_examenes.id_ordenexamen','orden_examenes.fecha_orden', 'orden_examenes.hora', 'orden_examenes.tipoexamen_id')
+            ->get();
+
+        return $orden;
     }
 
     /**
@@ -36,34 +40,29 @@ class DatoDemograficoController extends Controller
      */
     public function store(Request $request)
     {
-        //FALTA CALCULAR LA EDAD DEPENDIENDO DEL AÑO DE NACIMIENTO (VER FORMATO DATE DE ORACLE)
-        $edad = 0;
-        $demografico = new DatoDemografico();
-        $demografico->genero = $request->get('sexo');
-        $demografico->estado_civil = $request->get('estado_civil');
-        $year = date("Y");
-        $edad =  $year - $request->get('anio');
-        $demografico->edad = $edad;
+        $fecha = date($request->get('anio') . "/". $request->get('mes') . "/" . $request->get('dia'));
+        
+        $orden->fecha_orden = $fecha;
+        $orden->hora = $request->get('hora');
+        $orden->expediente_id = $request->get('id_expediente');
+        $orden->tipoexamen_id = $request->get('id_tipoexamen');
 
         DB::insert(
-            'insert into dato_demograficos (genero,estado_civil,edad) values (?, ?, ?)',
-            [$demografico->genero, $demografico->estado_civil,  $demografico->edad]
+            'insert into orden_examenes (fecha_orden, hora, tipoexamen_id) values (?, ?, ?)',
+            [
+                $orden->fecha_orden, $orden->hora, $orden->tipoexamen_id
+            ]
         );
 
-        $ultimo_registro = DB::table('dato_demograficos')
-            ->select('dato_demograficos.id_demografico')
-            ->orderBy('id_demografico', 'desc')
-            ->first();
-        return $ultimo_registro;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id_expediente
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id_expediente)
     {
         //
     }
@@ -71,10 +70,10 @@ class DatoDemograficoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id_expediente
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id_expediente)
     {
         //
     }
@@ -83,10 +82,10 @@ class DatoDemograficoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $id_expediente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_expediente)
     {
         //
     }
@@ -99,6 +98,7 @@ class DatoDemograficoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
+
 }
