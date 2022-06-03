@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Expediente extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'fecha_creacion_exp', 'clinica_id', 'paciente_id'
+    ];    
 }
