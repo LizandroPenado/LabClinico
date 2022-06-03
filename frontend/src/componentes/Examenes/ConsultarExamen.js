@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import DataTable from '../Datatable/DataTable';
-import { Button, Form, OverlayTrigger, Tooltip, Container, Row, Col } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
-import SearchIcon from '@mui/icons-material/Search';
 import './ConsultarExamen.css'
 
 export default function GestionMenu() {
@@ -17,6 +16,13 @@ export default function GestionMenu() {
     })
 
     const columns = [
+        {
+            name: "identificacion_paciente",
+            label: "Paciente",
+            options: {
+                filter: false,
+            }
+        },
         {
             name: "id_orden",
             label: "Id",
@@ -49,6 +55,27 @@ export default function GestionMenu() {
             },
         },
         {
+            name: "id_muestra",
+            label: "Id_mues",
+            options: {
+                display: false,
+                filter: false,
+                sort: false,
+                viewColumns: false,
+            },
+        },
+        {
+            name: "codigo_muestra",
+            label: "Codigo muestra",
+            options: {
+                filter: false,
+            },
+        },
+        {
+            name: "nombre_muestra",
+            label: "Tipo muestra",
+        },
+        {
             name: "acciones",
             label: "Acciónes",
             options: {
@@ -66,14 +93,13 @@ export default function GestionMenu() {
         },
     ];
 
-    const getBusqueda = () => {
+    const getOrden = () => {
         /*  http.get("http://127.0.0.1:8000/api/menu/rol")
              .then((response) => {
                  setOrdenExamen(response.data);
              }).catch((error) => {
                  console.log(error);
              }); */
-        console.log("busqueda");
     }
 
     const showRegister = (orden) => {
@@ -86,29 +112,6 @@ export default function GestionMenu() {
 
         })
         console.log("Enviar a otra interfaz con los datos")
-    }
-
-    const handleChange = (e) => {
-        const { value } = e.target;
-        setPaciente(value);
-    }
-
-    const handleGet = (e) => {
-        e.preventDefault();
-        if (paciente === "") {
-            Swal.fire({
-                icon: 'error',
-                title: 'Datos invalidos',
-                html: 'Ingrese la identificacion del paciente'
-            });
-            return;
-        }
-        /* http.get("http://127.0.0.1:8000/api/menu/rol")
-            .then((response) => {
-                setOrdenExamen(response.data);
-            }).catch((error) => {
-                console.log(error);
-            }); */
     }
 
     const Toast = Swal.mixin({
@@ -129,7 +132,7 @@ export default function GestionMenu() {
 
     return (
         <>
-            <div className='pt-5'></div>
+            {/* <div className='pt-5'></div>
             <Container className="menu-busqueda ">
                 <Row className="pt-4 pb-4">
                     <Col sm={10} className="pt-2">
@@ -146,20 +149,20 @@ export default function GestionMenu() {
                                     id="busqueda"
                                     name="busqueda"
                                     placeholder='Identificación paciente'
-                                /*  value={form.busqueda}
-                                 onChange={this.handleChange} */
+                                value={form.busqueda}
+                                 onChange={this.handleChange}
                                 />
                             </OverlayTrigger>
                         </Form.Group>
                     </Col>
                     <Col sm={2} className="pt-2">
-                        <Button variant="secondary" /* onClick={() => this.handleBusqueda()} */>
+                        <Button variant="secondary" onClick={() => this.handleBusqueda()}>
                             <SearchIcon />
                             <span className="texto-boton">Buscar</span>
                         </Button>
                     </Col>
                 </Row>
-            </Container>
+            </Container> */}
             <div className='container'>
                 <DataTable
                     titulo="Ordenes de examenes"
