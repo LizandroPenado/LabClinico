@@ -11,6 +11,7 @@ import ConsultarExamen from '../Examenes/ConsultarExamen';
 import Privilegios from '../Privilegios/Privilegios';
 import TipoMuestra from '../GestionTipos/TipoMuestra';
 import TipoExamen from '../GestionTipos/TipoExamen';
+import AgendarOrden from '../Paciente/AgendarOrden';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -42,6 +43,7 @@ function Rutas() {
                         return (
                             <>
                                 <Route path="/registrar" element={<RegistrarPaciente />} />
+                                <Route path="/agenda" element={<AgendarOrden />} />
                             </>
                         )
                     case "LAB":
