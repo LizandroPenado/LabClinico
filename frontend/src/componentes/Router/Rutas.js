@@ -15,6 +15,9 @@ import GestionClinica from '../Clinica/GestionClinica';
 import GestionEmpleado from '../Empleado/GestionEmpleado';
 import AgregarEmpleado from '../Empleado/AgregarEmpleado';
 import ConsultarEmpleado from '../Empleado/ConsultarEmpleado';
+import Expediente from '../Expediente/Expediente';
+import ReferenciasUrianalisis from '../ReferenciasUrianalisis/ReferenciasUrianalisis'
+import GestionPaciente from '../Paciente/GestionPaciente';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -39,13 +42,15 @@ function Rutas() {
                                 <Route path="/usuario" element={<Usuario />} />
                                 <Route path="/empleado" element={<GestionEmpleado />} />
                                 <Route path="/empleado/agregar" element={<AgregarEmpleado />} />
-                                <Route path="/empleado/consultar" element={<ConsultarEmpleado />} />
+                                <Route path="/empleado/consultar/" element={<ConsultarEmpleado />} />
                             </>
                         )
                     case "SEC":
                         return (
                             <>
                                 <Route path="/registrar" element={<RegistrarPaciente />} />
+                                <Route path="/paciente" element={<Expediente />} />
+                                <Route path="/gestionPac" element={<GestionPaciente />} />
                             </>
                         )
                     case "LAB":
@@ -68,6 +73,7 @@ function Rutas() {
                                 <Route path="/menu" element={<GestionMenu />} />
                                 <Route path="/privilegio" element={<Privilegios />} />
                                 <Route path="/clinica" element={<GestionClinica />} />
+                                <Route path="/refurianalisis" element={<ReferenciasUrianalisis />} />
                             </>
                         )
                     default:

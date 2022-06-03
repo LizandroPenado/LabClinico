@@ -161,4 +161,27 @@ class UserController extends Controller
             ->update(['estado' => 'Bloqueado']);
         return $bloc_user;
     }
+
+    public function userClinica(Request $request){
+        $user = $request->get('id');
+        $id_clinica = 0;
+
+        $empleado = DB::table('empleados')->get();
+
+        foreach ($empleado as $emp) {
+            if ($emp->usuario_id == $user) {
+                $id_clinica = $emp->clinica_id;
+            }
+        }
+
+        $user = DB::table('empleados')
+            ->join('users', 'users.id', '=', 'empleados.usuario_id')
+            ->join('clinicas', 'clinicas.id_clinica', '=', 'empleados.clinica_id')
+            ->join('rols', 'rols.id_rol', '=', 'users.rol_id')
+            ->select('users.id', 'users.name', 'users.email', 'users.name', 'users.estado', 'rols.id_rol', 'rols.nombre_rol', 'clinicas.nombre_clinica')
+            ->where('clinicas.id_clinica', '=', $id_clinica) 
+            ->get();
+
+        return $user;
+    }
 }

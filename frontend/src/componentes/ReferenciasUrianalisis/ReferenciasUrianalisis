@@ -13,21 +13,25 @@ function Usuario() {
   const [modalUpdate, setModalUpdate] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [tipoModal, setTipoModal] = useState("");
-  const [clinica, setClinica] = useState("");
-  const [users, setUsers] = useState([]);
+  const [refUrianalisis, setRefUrianalisis] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [user, setUser] = useState({
-    id: '',
-    name: '',
-    email: '',
-    password: '',
-    estado: 'Activo',
-    rol_id: 0,
+  const [refUrianalisi, setRefUrianalisi] = useState({
+    id_refurianalisis: '',
+    ph_min: '',
+    ph_max: '',
+/*     densidad_min: '',
+    densidad_max: '', */
+/*     leucocitos_normal: '',
+    nitrito_normal: '',
+    proteina_normal: '',
+    glucosa_normal: '',
+    cuerpos_centonicos_normal: '', */
+
   })
 
   const columns = [
     {
-      name: "id",
+      name: "id_refurianalisis",
       label: "Id",
       options: {
         display: false,
@@ -37,20 +41,20 @@ function Usuario() {
       },
     },
     {
-      name: "name",
-      label: "Nombre",
+      name: "ph_min",
+      label: "Ph minimo",
       options: {
         filter: false,
       },
     },
     {
-      name: "email",
-      label: "Email",
+      name: "ph_max",
+      label: "Ph maximo",
       options: {
         filter: false,
       },
     },
-    {
+    /* {
       name: "id_rol",
       label: "Id",
       options: {
@@ -67,11 +71,7 @@ function Usuario() {
     {
       name: "nombre_rol",
       label: "Rol",
-    },
-    {
-      name: "nombre_clinica",
-      label: "Clinica",
-    },
+    }, */
     {
       name: "acciones",
       label: "Acciónes",
@@ -92,27 +92,21 @@ function Usuario() {
   ];
 
   useEffect(() => {
-    getUser();
+    getParametros();
     getRoles();
   }, [])
 
-  const getUser = () => {
-    const user = JSON.parse(sessionStorage.getItem('user'));
+  const getParametros = () => {
     http
-      .get("http://127.0.0.1:8000/api/user/clinica", {
-        params: {
-          id: user.id,
-        }
-      })
+      .get("http://127.0.0.1:8000/api/user/")
       .then((response) => {
         setUsers(response.data);
-        setClinica(response.data[0].nombre_clinica);
       }).catch((error) => {
         console.log(error);
       });
   }
 
-  const getRoles = () => {
+/*   const getRoles = () => {
     http
       .get("http://127.0.0.1:8000/api/rol/")
       .then((response) => {
@@ -120,41 +114,41 @@ function Usuario() {
       }).catch((error) => {
         console.log(error);
       });
-  }
+  } */
 
   const closeInsert = () => { setModalInsert(false); clearData(); }
   const closeDelete = () => { setModalDelete(false); clearData(); }
   const closeUpdate = () => { setModalUpdate(false); clearData(); }
   const showInsert = () => { setModalInsert(true); setTipoModal("Insertar"); }
-  const showUpdate = (usuario) => {
+  const showUpdate = (refUrianalisi) => {
     setUser({
-      id: usuario[0],
-      name: usuario[1],
-      rol_id: usuario[3],
-      estado: usuario[4],
+      id_refurianalisis: refUrianalisi[0],
+      ph_min: refUrianalisi[1],
+      ph_max: refUrianalisi[2],
+      //estado: refUrianalisi[4],
     })
     setModalUpdate(true);
     setTipoModal("Actualizar");
   }
 
-  const showDelete = (usuario) => {
+/*   const showDelete = (refUrianalisi) => {
     setUser({
-      id: usuario[0],
+      id_refurianalisis: usuario[0],
       name: usuario[1],
     })
     setModalDelete(true);
     setTipoModal("");
-  }
+  } */
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value })
+    const { id_refurianalisis, value } = e.target;
+    setUser({ ...refUrianalisi, [id_refurianalisis]: value })
   }
 
   const handlePost = async (e) => {
     e.preventDefault();
     await http
-      .post("http://127.0.0.1:8000/api/user/register", user)
+      .post("http://127.0.0.1:8000/api/user/register", refUrianalisi)
       .then((response) => {
         Toast.fire({
           icon: 'success',
@@ -174,11 +168,11 @@ function Usuario() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     await http
-      .put("http://127.0.0.1:8000/api/user/" + user.id, user)
+      .put("http://127.0.0.1:8000/api/user/" + refUrianalisi.id_refurianalisis, refUrianalisi)
       .then((response) => {
         Toast.fire({
           icon: 'info',
-          title: 'Se ha actualizado el usuario: ' + user.name
+          title: 'Se ha actualizado el usuario: ' + refUrianalisi.id_refurianalisis
         })
         closeUpdate();
         getUser();
@@ -187,21 +181,21 @@ function Usuario() {
       });
   }
 
-  const handleDelete = async (e) => {
+/*   const handleDelete = async (e) => {
     e.preventDefault();
     await http
-      .delete("http://127.0.0.1:8000/api/user/" + user.id)
+      .delete("http://127.0.0.1:8000/api/user/" + refUrianalisi.id_refurianalisis)
       .then((response) => {
         Toast.fire({
           icon: 'error',
-          title: 'Se ha eliminado el usuario: ' + user.name
+          title: 'Se ha eliminado el usuario: ' + ref.name
         })
         closeDelete();
         getUser();
       }).catch((error) => {
         console.log(error);
       });
-  }
+  } */
 
   const Toast = Swal.mixin({
     toast: true,
@@ -216,17 +210,21 @@ function Usuario() {
   })
 
   const clearData = () => {
-    setUser({
-      id: '',
-      name: '',
-      email: '',
-      password: '',
-      estado: 'Activo',
-      rol_id: 0,
+    setRefUrianalisi({
+        id_refurianalisis: '',
+        ph_min: '',
+        ph_max: '',
+    /*     densidad_min: '',
+        densidad_max: '', */
+    /*     leucocitos_normal: '',
+        nitrito_normal: '',
+        proteina_normal: '',
+        glucosa_normal: '',
+        cuerpos_centonicos_normal: '', */
     })
   }
 
-  const { name, email, password, estado, rol_id } = user;
+  const { id_refurianalisis, ph_min, ph_max } = user;
 
   return (
     <>
@@ -242,10 +240,10 @@ function Usuario() {
               <span className="pl-8">Agregar</span>
             </Button>
           }
-          titulo={"Gestionar usuarios de " + clinica}
+          titulo="Usuarios"
           noRegistro="No hay registro de usuarios"
           columnas={columns}
-          datos={users}
+          datos={refUrianalisis}
         />
         {/* Modales */}
         <ModalCrud
@@ -273,7 +271,7 @@ function Usuario() {
                       minLength={4}
                       autoComplete="nope"
                       required={true}
-                      value={name}
+                      value={ph_max}
                       onChange={handleChange}
                     />
                   </OverlayTrigger>
@@ -296,7 +294,7 @@ function Usuario() {
                       minLength={8}
                       pattern="([A-z]+)@([A-z]+)[.]([A-z.]+)"
                       required={true}
-                      value={email}
+                      value={ph_max}
                       onChange={handleChange}
                     />
                   </OverlayTrigger>
@@ -319,7 +317,7 @@ function Usuario() {
                       minLength={8}
                       autoComplete="nope"
                       required={true}
-                      value={password}
+                      value={ph_min}
                       onChange={handleChange}
                     />
                   </OverlayTrigger>
@@ -330,7 +328,7 @@ function Usuario() {
                     id="rol_id"
                     name="rol_id"
                     required={true}
-                    value={rol_id}
+                    value={ph_max}
                     onChange={handleChange}
                   >
                     <option value=''>
@@ -354,7 +352,7 @@ function Usuario() {
                     id="estado"
                     name="estado"
                     required={true}
-                    value={estado}
+                    value={ph_max}
                     onChange={handleChange}
                   >
                     <option value='' disabled={true}>Seleccione...</option>
@@ -368,7 +366,7 @@ function Usuario() {
                     id="rol_id"
                     name="rol_id"
                     required={true}
-                    value={rol_id}
+                    value={ph_max}
                     onChange={handleChange}
                   >
                     <option value='' disabled={true}>Seleccione...</option>
@@ -408,7 +406,7 @@ function Usuario() {
           }
           abrirEliminar={modalDelete}
           cerrarEliminar={closeDelete}
-          registro={name}
+          registro={id_refurianalisis}
           pieModalEliminar={
             <>
               <Button variant="danger" onClick={handleDelete}>

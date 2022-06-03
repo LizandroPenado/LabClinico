@@ -13,10 +13,30 @@ class ExpedienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expediente = Expediente::all();
+
+        $user = $request->get('id');
+        $id_clinica = 0;
+
+        $empleado = DB::table('empleados')->get();
+
+        foreach($empleado as $emp){
+            if($emp->usuario_id == $user){
+                $id_clinica = $emp->clinica_id;
+            }
+            
+        }         
+
+        $expediente = DB::table('expedientes')
+            ->join('pacientes', 'pacientes.id_paciente', '=', 'expedientes.paciente_id')
+            ->join('clinicas', 'clinicas.id_clinica', '=', 'expedientes.clinica_id')
+            ->select('expedientes.id_expediente', 'pacientes.nombre_paciente', 'pacientes.apellido_paciente', 'clinicas.id_clinica', 'clinicas.nombre_clinica', 'expedientes.fecha_creacion_exp')
+            ->where('clinicas.id_clinica', '=', $id_clinica)            
+            ->get();
+
         return $expediente;
+
     }
 
     /**
@@ -56,10 +76,10 @@ class ExpedienteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id_expediente
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id_expediente)
     {
         //
     }
@@ -67,10 +87,10 @@ class ExpedienteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id_expediente
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id_expediente)
     {
         //
     }
@@ -79,10 +99,10 @@ class ExpedienteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $id_expediente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_expediente)
     {
         
     }
@@ -95,6 +115,20 @@ class ExpedienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $expediente = new Expediente();
+        $expediente = DB::table('expedientes')->where('id_expediente', $id)->delete();
+        return $expediente;
     }
+
+    public function filtroClinica(Request $request)
+    {
+        $user = $request->get('id');
+        $filtrado = DB::table('expedientes')
+            ->join('clinicas', 'clinicas.id_clinica', '=', 'expedientes.clinica_id')
+            ->select('clinicas.id_clinica', 'clinicas.nombre_clinica')
+            ->where('expedientes.clinica_id', '=', $user)
+            ->get();
+        return $filtrado;
+    } 
+
 }
