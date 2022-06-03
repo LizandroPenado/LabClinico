@@ -108,4 +108,10 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::get('expediente', [ExpedienteController::class, 'index']);
     Route::post('expediente', [ExpedienteController::class, 'store']);
+    Route::get('expediente/clinica', [ExpedienteController::class, 'filtroClinica']);
+    Route::delete('expediente/{id}', [ExpedienteController::class, 'destroy']);
+    Route::put('expediente/{id}', [ExpedienteController::class, 'update']);
+
+
+
 });
