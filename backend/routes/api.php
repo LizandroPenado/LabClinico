@@ -13,8 +13,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrivilegiosController;
 use App\Http\Controllers\TipoExamenController;
 use App\Http\Controllers\TipoMuestraController;
+use App\Http\Controllers\OrdenExamenesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -91,4 +93,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('tipoexamen', [TipoExamenController::class, 'store']);
     Route::put('tipoexamen/{id}', [TipoExamenController::class, 'update']);
     Route::delete('tipoexamen/{id}', [TipoExamenController::class, 'destroy']);
+
+    Route::get('orden', [OrdenExamenesController::class, 'index']);
+    Route::post('orden', [OrdenExamenesController::class, 'store']);
 });

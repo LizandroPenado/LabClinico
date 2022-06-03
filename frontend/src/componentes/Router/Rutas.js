@@ -13,6 +13,7 @@ import TipoMuestra from '../GestionTipos/TipoMuestra';
 import TipoExamen from '../GestionTipos/TipoExamen';
 import AgendarOrden from '../Paciente/AgendarOrden';
 
+
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
     const { token } = AuthUser();
