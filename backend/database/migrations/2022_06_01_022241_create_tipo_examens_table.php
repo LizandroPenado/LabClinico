@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tipo_examens', function (Blueprint $table) {
             $table->id('id_tipoexamen');
-            $table->string('nombre_tipo_exam', 25);
+            $table->string('nombre_tipo_exam', 40);
             $table->string('descripcion_tipo_exam', 250);
             $table->string('codigo_tipo_examen', 5);
             $table->unsignedBigInteger('tipomuestra_id');

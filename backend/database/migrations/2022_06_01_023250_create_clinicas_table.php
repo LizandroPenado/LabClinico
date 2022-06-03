@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('clinicas', function (Blueprint $table) {
             $table->id('id_clinica');
-            $table->string('nombre_clinica', 25);
+            $table->string('nombre_clinica', 50);
             $table->string('direccion_clinica', 100);
             $table->string('codigo_clinica', 5);
             $table->unsignedBigInteger('municipio_id');

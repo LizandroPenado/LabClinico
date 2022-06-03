@@ -57,6 +57,8 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
+        $year = date("y-m-d");
+
         $validatedData = $request->validate([
             'fecha_creacion' => 'required',
             'id_clinica' => 'required',
@@ -69,7 +71,7 @@ class ExpedienteController extends Controller
 
         DB::insert(
             'insert into expedientes (fecha_creacion_exp, clinica_id, paciente_id) values (?, ?, ?)',
-            [ $validatedData['fecha_creacion'], $validatedData['id_clinica'], $validatedData['id_paciente']]
+            [ $year, $validatedData['id_clinica'], $validatedData['id_paciente']]
         );
     }
 
