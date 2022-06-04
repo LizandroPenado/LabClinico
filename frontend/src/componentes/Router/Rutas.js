@@ -18,6 +18,9 @@ import ConsultarEmpleado from '../Empleado/ConsultarEmpleado';
 import Expediente from '../Expediente/Expediente';
 import ReferenciasUrianalisis from '../ReferenciasUrianalisis/ReferenciasUrianalisis'
 import GestionPaciente from '../Paciente/GestionPaciente';
+import AgendarOrden from '../Paciente/AgendarOrden';
+import ExamenesSecretaria from '../Examenes/ExamenesSecretaria';
+import RegistrarMuestra from '../Muestra/RegistrarMuestra';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -51,6 +54,9 @@ function Rutas() {
                                 <Route path="/registrar" element={<RegistrarPaciente />} />
                                 <Route path="/paciente" element={<Expediente />} />
                                 <Route path="/gestionPac" element={<GestionPaciente />} />
+                                <Route path="/paciente/agendar" element={<AgendarOrden />} />
+                                <Route path="/ordenPaciente" element={<ExamenesSecretaria />} />
+                                <Route path="/ordenPaciente/muestra" element={<RegistrarMuestra />} />
                             </>
                         )
                     case "LAB":

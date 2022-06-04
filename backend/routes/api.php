@@ -8,6 +8,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MunicipioController;
+use App\Http\Controllers\OrdenExamenesController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RolController;
@@ -117,8 +118,10 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('expediente/clinica', [ExpedienteController::class, 'filtroClinica']);
     Route::delete('expediente/{id}', [ExpedienteController::class, 'destroy']);
     Route::put('expediente/{id}', [ExpedienteController::class, 'update']);
+
     Route::get("urianalisis", [reporteUrianalisisController::class, 'index']);
     Route::get("quimicaclinica", [reporteQuimicaClinicaController::class, 'index']);
 
-
+    Route::get('orden', [OrdenExamenesController::class, 'index']);
+    Route::post('orden', [OrdenExamenesController::class, 'store']);
 });
