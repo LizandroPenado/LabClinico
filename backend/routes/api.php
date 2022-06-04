@@ -8,6 +8,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MunicipioController;
+use App\Http\Controllers\OrdenExamenesController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RolController;
@@ -116,6 +117,6 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::delete('expediente/{id}', [ExpedienteController::class, 'destroy']);
     Route::put('expediente/{id}', [ExpedienteController::class, 'update']);
 
-
-
+    Route::get('orden', [OrdenExamenesController::class, 'index']);
+    Route::post('orden', [OrdenExamenesController::class, 'store']);
 });

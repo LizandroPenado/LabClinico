@@ -69,7 +69,7 @@ function Expediente() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <Button size="sm" variant="light">
-              <Link to={"/expediente/consultar/" + tableMeta.rowData[0]}><VisibilityIcon /></Link>
+              <Link to={"/paciente/agendar?expediente=" + tableMeta.rowData[0]}><VisibilityIcon /></Link>
             </Button>
           );
         },
@@ -99,7 +99,7 @@ function Expediente() {
     <>
       <div className='pt-3 container'>
         <DataTable
-          titulo="Pacientes"
+          titulo={"Pacientes"}
           noRegistro="No hay registro de pacientes"
           columnas={columns}
           datos={expedientes}
