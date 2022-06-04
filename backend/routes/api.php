@@ -17,6 +17,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrivilegiosController;
 use App\Http\Controllers\TipoExamenController;
 use App\Http\Controllers\TipoMuestraController;
+use App\Http\Controllers\reporteUrianalisisController;
+use App\Http\Controllers\reporteQuimicaClinicaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -116,6 +118,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('expediente/clinica', [ExpedienteController::class, 'filtroClinica']);
     Route::delete('expediente/{id}', [ExpedienteController::class, 'destroy']);
     Route::put('expediente/{id}', [ExpedienteController::class, 'update']);
+
+    Route::get("urianalisis", [reporteUrianalisisController::class, 'index']);
+    Route::get("quimicaclinica", [reporteQuimicaClinicaController::class, 'index']);
 
     Route::get('orden', [OrdenExamenesController::class, 'index']);
     Route::post('orden', [OrdenExamenesController::class, 'store']);
