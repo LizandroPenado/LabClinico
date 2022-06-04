@@ -16,7 +16,6 @@ import GestionEmpleado from '../Empleado/GestionEmpleado';
 import AgregarEmpleado from '../Empleado/AgregarEmpleado';
 import ConsultarEmpleado from '../Empleado/ConsultarEmpleado';
 import Expediente from '../Expediente/Expediente';
-import ReferenciasUrianalisis from '../ReferenciasUrianalisis/ReferenciasUrianalisis'
 import GestionPaciente from '../Paciente/GestionPaciente';
 import AgendarOrden from '../Paciente/AgendarOrden';
 import ExamenesSecretaria from '../Examenes/ExamenesSecretaria';

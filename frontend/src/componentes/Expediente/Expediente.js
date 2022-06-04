@@ -52,13 +52,13 @@ function Expediente() {
         filter: false,
       },
     },
-    {
+    /* {
       name: "fecha_creacion_exp",
       label: "Fecha Creacion",
       options: {
         filter: false,
       },
-    },
+    }, */
     {
       name: "acciones",
       label: "Acciónes",
