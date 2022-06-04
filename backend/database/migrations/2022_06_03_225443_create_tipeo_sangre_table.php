@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
-            $table->id('id_menu');
-            $table->string('titulo', 30);
-            $table->string('url', 70);
-            $table->unsignedBigInteger('rol_id');
-            $table->foreign('rol_id')->references('id_rol')->on('rols')->onUpdate('cascade')->onDelete('cascade');
+        Schema::create('tipeo_sangre', function (Blueprint $table) {
+            $table->id('id_tipeosangre');
+            $table->string('grupo_a', 25);
+            $table->string('grupo_b', 25);
+            $table->string('grupo_o', 25);
+            $table->string('grupo_ab', 25);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('tipeo_sangre');
     }
 };

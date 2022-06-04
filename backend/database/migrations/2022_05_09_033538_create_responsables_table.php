@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('responsables', function (Blueprint $table) {
             $table->id('id_responsable');
-            $table->string('nombre_responsable', 25);
-            $table->string('apellido_responsable', 25);
-            $table->string('correo_responsable', 50)->unique()->nullable();
+            $table->string('nombre_responsable', 40);
+            $table->string('apellido_responsable', 40);
+            $table->string('correo_responsable', 70)->unique()->nullable();
             $table->string('identificacion_res', 20)->unique();
             $table->string('tipo_identificacion_res', 9);
             $table->date('fecha_nacimiento_res');

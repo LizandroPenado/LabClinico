@@ -8,6 +8,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MunicipioController;
+use App\Http\Controllers\OrdenExamenesController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RolController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrivilegiosController;
 use App\Http\Controllers\TipoExamenController;
 use App\Http\Controllers\TipoMuestraController;
+use App\Http\Controllers\reporteUrianalisisController;
+use App\Http\Controllers\reporteQuimicaClinicaController;
 use App\Http\Controllers\RefUrianalisisController;
 use App\Http\Controllers\RefQuimicaController;
 use Illuminate\Http\Request;
@@ -57,6 +60,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::get('paciente', [PacienteController::class, 'index']);
     Route::post('paciente', [PacienteController::class, 'store']);
+    Route::put('paciente/{id}', [PacienteController::class, 'update']);
+    Route::delete('paciente/{id}', [PacienteController::class, 'destroy']);
 
     Route::get('user', [UserController::class, 'index']);
     Route::get('user/rol', [UserController::class, 'userRol']);
@@ -65,6 +70,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('user', [UserController::class, 'store']);
     Route::put('user/{id}', [UserController::class, 'update']);
     Route::delete('user/{id}', [UserController::class, 'destroy']);
+    Route::get('user/clinica', [UserController::class, 'userClinica']);
 
     Route::get('rol', [RolController::class, 'index']);
     Route::post('rol', [RolController::class, 'store']);
@@ -107,6 +113,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::put('empleado/{id}', [EmpleadoController::class, 'update']);
     Route::delete('empleado/{id}', [EmpleadoController::class, 'destroy']);
     Route::get('empleado/clinica', [EmpleadoController::class, 'filtroClinica']);
+    Route::get('empleado/filtro', [EmpleadoController::class, 'filtroEmpleado']);
 
     Route::get('expediente', [ExpedienteController::class, 'index']);
     Route::post('expediente', [ExpedienteController::class, 'store']);
@@ -114,10 +121,13 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::delete('expediente/{id}', [ExpedienteController::class, 'destroy']);
     Route::put('expediente/{id}', [ExpedienteController::class, 'update']);
 
+    Route::get("urianalisis", [reporteUrianalisisController::class, 'index']);
+    Route::get("quimicaclinica", [reporteQuimicaClinicaController::class, 'index']);
     Route::get('refurianalisis', [RefUrianalisisController::class, 'index']);
     Route::put('refurianalisis/{id}', [RefUrianalisisController::class, 'update']);
     Route::get('refquimica', [RefQuimicaController::class, 'index']);
     Route::put('refquimica/{id}', [RefQuimicaController::class, 'update']);
 
-
+    Route::get('orden', [OrdenExamenesController::class, 'index']);
+    Route::post('orden', [OrdenExamenesController::class, 'store']);
 });

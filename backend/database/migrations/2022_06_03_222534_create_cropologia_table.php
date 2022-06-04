@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
-            $table->id('id_menu');
-            $table->string('titulo', 30);
-            $table->string('url', 70);
-            $table->unsignedBigInteger('rol_id');
-            $table->foreign('rol_id')->references('id_rol')->on('rols')->onUpdate('cascade')->onDelete('cascade');
+        Schema::create('cropologia', function (Blueprint $table) {
+            $table->id('id_cropologia');
+            $table->string('eritrocitos', 15);
+            $table->string('levadura', 15);
+            $table->string('restos_grasa', 15);
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('cropologia');
     }
 };

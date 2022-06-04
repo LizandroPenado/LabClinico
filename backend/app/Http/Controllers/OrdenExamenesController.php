@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Expediente;
+use App\Models\OrdenExamenes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ExpedienteController extends Controller
+class OrdenExamenesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,6 @@ class ExpedienteController extends Controller
      */
     public function index(Request $request)
     {
-
         $user = $request->get('id');
         $id_clinica = 0;
 
@@ -28,15 +26,16 @@ class ExpedienteController extends Controller
             
         }         
 
-        $expediente = DB::table('expedientes')
+        $orden = DB::table('orden_examenes')
+            ->join('tipo_examens', 'tipo_examens.id_tipoexamen', '=', 'orden_examenes.tipoexamen_id')
+            ->join('expedientes', 'expedientes.id_expediente', '=', 'orden_examenes.expediente_id')
             ->join('pacientes', 'pacientes.id_paciente', '=', 'expedientes.paciente_id')
             ->join('clinicas', 'clinicas.id_clinica', '=', 'expedientes.clinica_id')
-            ->select('expedientes.id_expediente', 'pacientes.nombre_paciente', 'pacientes.apellido_paciente', 'clinicas.id_clinica', 'clinicas.nombre_clinica', 'expedientes.fecha_creacion_exp')
-            ->where('clinicas.id_clinica', '=', $id_clinica)            
+            ->select('orden_examenes.id_ordenexamen','orden_examenes.fecha_orden', 'orden_examenes.hora_orden', 'orden_examenes.tipoexamen_id', 'tipo_examens.nombre_tipo_exam', 'pacientes.identificacion_pac', 'pacientes.nombre_paciente')
+            ->where('clinicas.id_clinica', '=', $id_clinica)  
             ->get();
 
-        return $expediente;
-
+        return $orden;
     }
 
     /**
@@ -57,21 +56,25 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
-        $year = date("y-m-d");
-
         $validatedData = $request->validate([
-            'fecha_creacion' => 'required',
-            'id_clinica' => 'required',
-            'id_paciente' => 'required',
+            'anio' => 'required',
+            'mes' => 'required',
+            'dia' => 'required',
+            'hora_orden' => 'required',
+            'expediente_id' => 'required',
+            'id_tipoexamen' => 'required',
         ], [
-            'fecha_creacion.required' => 'La fecha es requerida.',
-            'id_clinica.required' => 'La clinica es requerido.',
-            'id_paciente.required' => 'El paciente es requerido.',
+            'expediente_id.required' => 'el expediente es requerido.',
+            'id_tipoexamen.required' => 'El tipo examen es requerido.',
         ]);
 
+        $fecha = date($request->get('anio') . "/". $request->get('mes') . "/" . $request->get('dia'));
+
         DB::insert(
-            'insert into expedientes (fecha_creacion_exp, clinica_id, paciente_id) values (?, ?, ?)',
-            [ $year, $validatedData['id_clinica'], $validatedData['id_paciente']]
+            'insert into orden_examenes (fecha_orden, hora_orden, tipoexamen_id,expediente_id) values (?, ?, ?, ?)',
+            [
+                $fecha, $validatedData['hora_orden'], $validatedData['id_tipoexamen'], $validatedData['expediente_id']
+            ]
         );
     }
 
@@ -106,7 +109,7 @@ class ExpedienteController extends Controller
      */
     public function update(Request $request, $id_expediente)
     {
-        
+        //
     }
 
     /**
@@ -117,20 +120,7 @@ class ExpedienteController extends Controller
      */
     public function destroy($id)
     {
-        $expediente = new Expediente();
-        $expediente = DB::table('expedientes')->where('id_expediente', $id)->delete();
-        return $expediente;
+        
     }
-
-    public function filtroClinica(Request $request)
-    {
-        $user = $request->get('id');
-        $filtrado = DB::table('expedientes')
-            ->join('clinicas', 'clinicas.id_clinica', '=', 'expedientes.clinica_id')
-            ->select('clinicas.id_clinica', 'clinicas.nombre_clinica')
-            ->where('expedientes.clinica_id', '=', $user)
-            ->get();
-        return $filtrado;
-    } 
 
 }

@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
-            $table->id('id_menu');
-            $table->string('titulo', 30);
-            $table->string('url', 70);
-            $table->unsignedBigInteger('rol_id');
-            $table->foreign('rol_id')->references('id_rol')->on('rols')->onUpdate('cascade')->onDelete('cascade');
+        Schema::create('rango_leucocito', function (Blueprint $table) {
+            $table->id('id_rangoleu');
+            $table->integer('leu_nino_max');
+            $table->integer('leu_nino_min');
+            $table->integer('leu_adulto_max');
+            $table->integer('leu_adulto_min');
+            $table->string('tipo_leucocito', 25);
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('rango_leucocito');
     }
 };

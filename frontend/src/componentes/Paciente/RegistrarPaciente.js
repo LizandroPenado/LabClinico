@@ -211,7 +211,7 @@ export default function RegistrarPaciente() {
         var hoy = new Date();
         await http
             .post("http://127.0.0.1:8000/api/expediente/", {
-                fecha_creacion: hoy.toLocaleDateString(),
+                fecha_creacion: hoy.toISOString().split('T')[0],
                 id_paciente: id_pac.id_paciente,
                 id_clinica: expediente.id_clinica,
             })
@@ -548,7 +548,7 @@ export default function RegistrarPaciente() {
                                     <OverlayTrigger
                                         overlay={
                                             <Tooltip>
-                                                Digitos entre 00 a 99
+                                                Digitos entre 1910 hasta el año actual
                                             </Tooltip>
                                         }
                                     >
@@ -560,9 +560,8 @@ export default function RegistrarPaciente() {
                                                 value={anio}
                                                 onChange={handleChangePaciente}
                                                 required
-                                                maxLength={2}
-                                                min={0}
-                                                max={99}
+                                                maxLength={4}
+                                                min={1910}
                                                 placeholder='año'
                                             />
                                         </Form.Group>
@@ -795,7 +794,7 @@ export default function RegistrarPaciente() {
                                     <OverlayTrigger
                                         overlay={
                                             <Tooltip>
-                                                Digitos entre 00 a 99
+                                                Digitos entre 1950 hasta el anio actual
                                             </Tooltip>
                                         }
                                     >
@@ -807,9 +806,8 @@ export default function RegistrarPaciente() {
                                                 value={anio_res}
                                                 onChange={handleChangeResponsable}
                                                 required
-                                                maxLength={2}
-                                                min={0}
-                                                max={99}
+                                                maxLength={4}
+                                                min={1950}
                                                 placeholder='año'
                                             />
                                         </Form.Group>

@@ -6,6 +6,7 @@ use App\Models\Privilegios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class PrivilegiosController extends Controller
 {
     /**

@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DatoDemografico;
+use App\Models\QuimicaClinica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
-class DatoDemograficoController extends Controller
+
+class reporteQuimicaClinicaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
-        //
+        $quimica_clinica = DB::table('quimica_clinica')
+            ->join()
+            ->select()
+            ->get();
+        
+        $pdf = PDF::loadView('quimicaclinica', ['quimica_clinica'=> $quimica_clinica]);    
+
+        return $pdf->stream;
     }
 
     /**
@@ -36,25 +41,7 @@ class DatoDemograficoController extends Controller
      */
     public function store(Request $request)
     {
-        //FALTA CALCULAR LA EDAD DEPENDIENDO DEL AÑO DE NACIMIENTO (VER FORMATO DATE DE ORACLE)
-        $edad = 0;
-        $demografico = new DatoDemografico();
-        $demografico->genero = $request->get('sexo');
-        $demografico->estado_civil = $request->get('estado_civil');
-        $year = date("Y");
-        $edad =  $year - $request->get('anio');
-        $demografico->edad = $edad;
-
-        DB::insert(
-            'insert into dato_demograficos (genero,estado_civil,edad) values (?, ?, ?)',
-            [$demografico->genero, $demografico->estado_civil,  $demografico->edad]
-        );
-
-        $ultimo_registro = DB::table('dato_demograficos')
-            ->select('dato_demograficos.id_demografico')
-            ->orderBy('id_demografico', 'desc')
-            ->first();
-        return $ultimo_registro;
+        //
     }
 
     /**
