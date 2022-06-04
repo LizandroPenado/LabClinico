@@ -14,7 +14,7 @@ export default function RegistrarMuestra() {
         codigo_muestra: '',
         identificacion_paciente: '',
         id_ordenexamen: 0,
-        tipo_muestra: '',
+        codigo_tipo_muestra: '',
     })
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function RegistrarMuestra() {
     const handlePost = async (e) => {
         e.preventDefault();
         setValidated(true);
-        if (codigo_muestra === "" || identificacion_paciente === "" || tipo_muestra === "" || id_ordenexamen === "") {
+        if (codigo_muestra === "" || identificacion_paciente === "" || codigo_tipo_muestra === "" || id_ordenexamen === "") {
             Swal.fire({
                 icon: 'error',
                 title: 'Debe ingresar todos los datos requeridos para el registro de muestra',
@@ -84,7 +84,7 @@ export default function RegistrarMuestra() {
         }
     })
 
-    const { codigo_muestra, identificacion_paciente, tipo_muestra, id_ordenexamen } = muestra;
+    const { codigo_muestra, identificacion_paciente, codigo_tipo_muestra, id_ordenexamen } = muestra;
 
     return (
         <>
@@ -116,15 +116,15 @@ export default function RegistrarMuestra() {
                     <Form.Group>
                         <Form.Label>Tipo de muestra*</Form.Label>
                         <Form.Select
-                            id='tipo_muestra'
-                            name='tipo_muestra'
-                            value={tipo_muestra}
+                            id='codigo_tipo_muestra'
+                            name='codigo_tipo_muestra'
+                            value={codigo_tipo_muestra}
                             onChange={handleChange}
                             required>
                             <option value='' >Seleccione...</option>
                             {tipoMuestra.map((tipo) => {
                                 return (
-                                    <option key={tipo.nombre_tipo_mues} value={tipo.nombre_tipo_mues}>{tipo.nombre_tipo_mues}</option>
+                                    <option key={tipo.codigo_tipo_muestra} value={tipo.codigo_tipo_muestra}>{tipo.nombre_tipo_mues}</option>
                                 );
                             })}
                         </Form.Select>

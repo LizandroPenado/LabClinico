@@ -7,6 +7,7 @@ use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\OrdenExamenesController;
 use App\Http\Controllers\PacienteController;
@@ -130,4 +131,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::get('orden', [OrdenExamenesController::class, 'index']);
     Route::post('orden', [OrdenExamenesController::class, 'store']);
+
+    Route::get('muestra', [MuestraController::class, 'index']);
+    Route::post('muestra', [MuestraController::class, 'store']);
 });
