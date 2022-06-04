@@ -16,6 +16,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrivilegiosController;
 use App\Http\Controllers\TipoExamenController;
 use App\Http\Controllers\TipoMuestraController;
+use App\Http\Controllers\RefUrianalisisController;
+use App\Http\Controllers\RefQuimicaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -112,6 +114,10 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::delete('expediente/{id}', [ExpedienteController::class, 'destroy']);
     Route::put('expediente/{id}', [ExpedienteController::class, 'update']);
 
+    Route::get('refurianalisis', [RefUrianalisisController::class, 'index']);
+    Route::put('refurianalisis/{id}', [RefUrianalisisController::class, 'update']);
+    Route::get('refquimica', [RefQuimicaController::class, 'index']);
+    Route::put('refquimica/{id}', [RefQuimicaController::class, 'update']);
 
 
 });

@@ -16,7 +16,8 @@ import GestionEmpleado from '../Empleado/GestionEmpleado';
 import AgregarEmpleado from '../Empleado/AgregarEmpleado';
 import ConsultarEmpleado from '../Empleado/ConsultarEmpleado';
 import Expediente from '../Expediente/Expediente';
-import ReferenciasUrianalisis from '../ReferenciasUrianalisis/ReferenciasUrianalisis'
+import RefUrianalisi from '../RefUrianalisi/RefUrianalisi';
+import RefQuimica from '../RefQuimica/RefQuimica';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -71,7 +72,8 @@ function Rutas() {
                                 <Route path="/menu" element={<GestionMenu />} />
                                 <Route path="/privilegio" element={<Privilegios />} />
                                 <Route path="/clinica" element={<GestionClinica />} />
-                                <Route path="/refurianalisis" element={<ReferenciasUrianalisis />} />
+                                <Route path="/refurianalisis" element={<RefUrianalisi />} />
+                                <Route path="/refquimica" element={<RefQuimica />} />
                             </>
                         )
                     default:

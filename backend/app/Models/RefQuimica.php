@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Expediente extends Model
+class RefQuimica extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'clinica_id', 'paciente_id'
-    ];    
+        'id_refquimica', 'glucosa_min', 'glucosa_max', 'colesterol_normal', 'trigliceridos_min', 
+        'trigliceridos_max', 'acido_id'
+    ];  
 }

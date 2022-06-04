@@ -105,7 +105,10 @@ class ClinicaController extends Controller
 
         $act_clinica = DB::table('clinicas')
             ->where('id_clinica', $request->id_clinica)
-            ->update(['nombre_clinica' => $validatedData['nombre_clinica'], 'direccion_clinica' => $validatedData['direccion_clinica'], 'codigo_clinica' => $validatedData['codigo_clinica'], 'municipio_id' => $validatedData['id_municipio']]);
+            ->update(['nombre_clinica' => $validatedData['nombre_clinica'], 
+                      'direccion_clinica' => $validatedData['direccion_clinica'], 
+                      'codigo_clinica' => $validatedData['codigo_clinica'], 
+                      'municipio_id' => $validatedData['id_municipio']]);
         return $act_clinica;
     }
 

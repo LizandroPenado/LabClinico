@@ -9,8 +9,6 @@ import AuthUser from '../Login/AuthUser';
 import './Expediente.css';
 import ButtonConsult from '../Datatable/ButtonConsult';
 
-
-
 function Expediente() {
   const { http } = AuthUser();
   const [modalInsert, setModalInsert] = useState(false);
@@ -19,8 +17,6 @@ function Expediente() {
   const [tipoModal, setTipoModal] = useState("");
   const [roles, setRoles] = useState([]);
   const [expedientes, setExpedientes] = useState([]);
-  const [pacientes, setPacientes] = useState([]);
-  const [clinicas, setClinicas] = useState([]);
   const [expediente, setExpediente] = useState({
     id_expediente: '',
     nombre_paciente: '',
