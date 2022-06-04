@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DataTable from '../Datatable/DataTable';
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import './ConsultarExamen.css'
+import AuthUser from '../Login/AuthUser';
 
 export default function GestionMenu() {
+    const { http } = AuthUser();
     const [ordenExamen, setOrdenExamen] = useState([]);
     const [paciente, setPaciente] = useState('');
     const [orden, setOrden] = useState({
@@ -17,7 +19,7 @@ export default function GestionMenu() {
 
     const columns = [
         {
-            name: "identificacion_paciente",
+            name: "identificacion_pac",
             label: "Paciente",
             options: {
                 filter: false,
@@ -72,8 +74,12 @@ export default function GestionMenu() {
             },
         },
         {
-            name: "nombre_muestra",
+            name: "tipo_muestra",
             label: "Tipo muestra",
+        },
+        {
+            name: "nombre_tipo_exam",
+            label: "Tipo examen",
         },
         {
             name: "acciones",
@@ -84,7 +90,7 @@ export default function GestionMenu() {
                 print: false,
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
-                        <Button size="sm" variant="outline-success" onClick={showRegister(tableMeta.rowData)}>
+                        <Button size="sm" variant="outline-success" /* onClick={showRegister(tableMeta.rowData)} */>
                             Registrar
                         </Button>
                     );
@@ -92,14 +98,24 @@ export default function GestionMenu() {
             },
         },
     ];
+    
+    useEffect(() => {
+        getOrden();
+    }, [])
 
     const getOrden = () => {
-        /*  http.get("http://127.0.0.1:8000/api/menu/rol")
-             .then((response) => {
-                 setOrdenExamen(response.data);
-             }).catch((error) => {
-                 console.log(error);
-             }); */
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        http.get("http://127.0.0.1:8000/api/muestra", {
+            params: {
+                id: user.id,
+            }
+        })
+            .then((response) => {
+                console.log(response.data);
+                setOrdenExamen(response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
     const showRegister = (orden) => {
