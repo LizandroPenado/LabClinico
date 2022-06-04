@@ -21,6 +21,8 @@ import GestionPaciente from '../Paciente/GestionPaciente';
 import AgendarOrden from '../Paciente/AgendarOrden';
 import ExamenesSecretaria from '../Examenes/ExamenesSecretaria';
 import RegistrarMuestra from '../Muestra/RegistrarMuestra';
+import RefUrianalisi from '../RefUrianalisi/RefUrianalisi';
+import RefQuimica from '../RefQuimica/RefQuimica';
 
 function Rutas() {
     const [dataUser, setDataUser] = useState([]);
@@ -79,7 +81,8 @@ function Rutas() {
                                 <Route path="/menu" element={<GestionMenu />} />
                                 <Route path="/privilegio" element={<Privilegios />} />
                                 <Route path="/clinica" element={<GestionClinica />} />
-                                <Route path="/refurianalisis" element={<ReferenciasUrianalisis />} />
+                                <Route path="/refurianalisis" element={<RefUrianalisi />} />
+                                <Route path="/refquimica" element={<RefQuimica />} />
                             </>
                         )
                     default:

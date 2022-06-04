@@ -20,6 +20,8 @@ use App\Http\Controllers\TipoExamenController;
 use App\Http\Controllers\TipoMuestraController;
 use App\Http\Controllers\reporteUrianalisisController;
 use App\Http\Controllers\reporteQuimicaClinicaController;
+use App\Http\Controllers\RefUrianalisisController;
+use App\Http\Controllers\RefQuimicaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -122,6 +124,10 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::get("urianalisis", [reporteUrianalisisController::class, 'index']);
     Route::get("quimicaclinica", [reporteQuimicaClinicaController::class, 'index']);
+    Route::get('refurianalisis', [RefUrianalisisController::class, 'index']);
+    Route::put('refurianalisis/{id}', [RefUrianalisisController::class, 'update']);
+    Route::get('refquimica', [RefQuimicaController::class, 'index']);
+    Route::put('refquimica/{id}', [RefQuimicaController::class, 'update']);
 
     Route::get('orden', [OrdenExamenesController::class, 'index']);
     Route::post('orden', [OrdenExamenesController::class, 'store']);
